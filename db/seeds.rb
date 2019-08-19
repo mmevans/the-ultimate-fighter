@@ -206,7 +206,33 @@ schedule_level_5 = Schedule.create({
     :relax => "6 hours"
 })
 
+barrette = User.create({
+    :username => "Barrette",
+    :trainer_name => nil,
+    :energy => 100,
+    :money => 0,
+    :flex => 1,
+    :str => 1,
+    :end => 1,
+    :fights_won => 0,
+    :weeks_trained => 0,
+    :injured => false,
+    :password => nil
+})
 
+michael = User.create({
+    :username => "Michael",
+    :trainer_name => nil,
+    :energy => 100,
+    :money => 0,
+    :flex => 1,
+    :str => 1,
+    :end => 1,
+    :fights_won => 0,
+    :weeks_trained => 0,
+    :injured => false,
+    :password => nil
+})
 
 
 

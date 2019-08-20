@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 9) do
+ActiveRecord::Schema.define(version: 10) do
 
   create_table "fights", force: :cascade do |t|
     t.string "users"
@@ -76,12 +76,14 @@ ActiveRecord::Schema.define(version: 9) do
     t.boolean "injured"
     t.string "password"
     t.string "gender"
+    t.integer "level"
   end
 
   create_table "workouts", force: :cascade do |t|
     t.string "str_workouts"
     t.string "flex_workouts"
     t.string "end_workouts"
+    t.integer "level"
   end
 
 end

@@ -114,34 +114,60 @@ mickey_goldmill = Trainer.create({
 })
 
 moves_level_1 = Moveset.create({
+    :level => 1,
     :str_moves => "Jab",
+    :str_damage => 20,
     :flex_moves => "Low-Kick",
+    :flex_damage => 18,
     :end_moves => "Bob and Weave",
-    :power_moves => "Uppercut"
+    :end_damage => 15,
+    :power_moves => "Uppercut",
+    :power_damage => 35
 })
 moves_level_2 = Moveset.create({
+    :level => 2,
     :str_moves => "Right Hook",
+    :str_damage => 35,
     :flex_moves => "Karate Chop",
+    :flex_damage => 32,
     :end_moves => "Tie Up",
-    :power_moves => "High Jump Kick"
+    :end_damage => 26,
+    :power_moves => "High Jump Kick",
+    :power_damage => 61
 })
 moves_level_3 = Moveset.create({
+    :level => 3,
     :str_moves => "Focus Punch",
+    :str_damage => 61,
     :flex_moves => "Double Kick",
+    :flex_damage => 56,
     :end_moves => "Parry",
-    :power_moves => "Knee of Justice"
+    :end_damage => 46,
+    :power_moves => "Knee of Justice",
+    :power_damage => 106
 })
 moves_level_4 = Moveset.create({
+    :level => 4,
     :str_moves => "Hammerfist",
+    :str_damage => 90,
     :flex_moves => "Round House Kick",
+    :flex_damage => 75,
     :end_moves => "Butterfly Guard",
-    :power_moves => "Uchi Mata"
+    :end_damage => 63,
+    :power_moves => "Uchi Mata",
+    :power_damage => 137
 })
 moves_level_5 = Moveset.create({
+    :level => 5
     :str_moves => "Rear-Naked Choke",
+    :str_damage => 103,
     :flex_moves => "Double Leg Takedown",
+    :flex_damage => 89,
     :end_moves => "Parry + DoubleSlap",
-    :power_moves => "Skull Crusher"
+    :end_damage => 79,
+    :power_moves => "Skull Crusher",
+    :power_damage => 150
+    
 })
 
 workout_level_1 = Workout.create({

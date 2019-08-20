@@ -3,6 +3,9 @@ require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
 
+
+
+
 $current_user = nil
 $user = nil
 $password = nil
@@ -128,10 +131,11 @@ def goodluck
     prompt.say("You're all set! Good luck!")
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
-        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => '█')
-        100.times { progressbar.increment; sleep(0.1) }
+        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
+        100.times {progressbar.increment; sleep(0.1)}
     end
 end
+
 
 def mainmenu 
     prompt = TTY::Prompt.new
@@ -150,16 +154,17 @@ end
 
 def stats
     prompt = TTY::Prompt.new
-    prompt.say("MONEY: #{current_user.money}")
-    prompt.say("ENERGY: #{current_user.energy}")
-    prompt.say("STRENGTH: #{current_user.strength}")
-    prompt.say("FLEXIBILITY: #{current_user.flexibility}")
-    prompt.say("ENDURANCE: #{current_user.endurance}")
-    prompt.say("TRAINER: #{current_user.trainer}")
-    prompt.say("WEEKS TRAINED #{current_user.weekstrained}")
-    prompt.say("FIGHTS WON #{current_user.fights_won}")
-    prompt.say("INJURED #{current_user.injured}")
-    prompt.say("GENDER #{current_user.gender}")
+    prompt.say("MONEY: #{$user.money}")
+    prompt.say("ENERGY: #{$user.energy}")
+    prompt.say("STRENGTH: #{$user.str}")
+    prompt.say("FLEXIBILITY: #{$user.flex}")
+    prompt.say("ENDURANCE: #{$user.end}")
+    prompt.say("TRAINER: #{$user.trainer_name}")
+    prompt.say("WEEKS TRAINED #{$user.weeks_trained}")
+    prompt.say("FIGHTS WON #{$user.fights_won}")
+    prompt.say("INJURED #{$user.injured}")
+    prompt.say("GENDER #{$user.gender}")
+    prompt.say("GENDER  #{$user.level}")
     input10 = prompt.select("Ready to go back?", ["Back"])
     if input10 == "Back"
         mainmenu
@@ -191,9 +196,9 @@ def gotrain
         puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
         puts
         sleep(2.0)
-        input12 = prompt.select("Ready to go back?", ["Back"])
+        goback = prompt.select("Ready to go back?", ["Back"])
     end
-    if input12 == "Back"
+    if goback == "Back"
         mainmenu
     end
 end
@@ -202,7 +207,7 @@ def help
     prompt = TTY::Prompt.new
     choosehelp = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
     if choosehelp == "How Does Schedule Work"
-        schedule
+        schedulehelp
     elsif choosehelp == "How Do Fights Work"
         fighthelp
     elsif choosehelp == "About The Creators"

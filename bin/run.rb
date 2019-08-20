@@ -2,12 +2,6 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> b3ea4b99784cdc00dbc65d056ce0dcc334172fb0
 
 $current_user = nil
 $user = nil
@@ -134,13 +128,8 @@ def goodluck
     prompt.say("You're all set! Good luck!")
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
-<<<<<<< HEAD
-        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => '█')
-        100.times { progressbar.increment; sleep(0.1) }
-=======
         progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
         100.times {progressbar.increment; sleep(0.1)}
->>>>>>> b3ea4b99784cdc00dbc65d056ce0dcc334172fb0
     end
 end
 
@@ -182,9 +171,11 @@ end
 def gotofight
     prompt = TTY::Prompt.new
     prompt.say("This is where you'll be fighting")
-    input11 = prompt.select("Ready to go back?", ["Back"])
-    if input11 == "Back"
-     mainmenu
+    input11 = prompt.select("Ready to go back?", ["Go To Fight", "Back"])
+    if input11 == "Go To Fight"
+        realfightinfo
+    else 
+        mainmenu
     end
 end
 
@@ -264,7 +255,9 @@ end
 
 
 def realfightinfo
-    choosefight = prompt.select("Opponent Info", ["Start Fight"])
+    prompt = TTY::Prompt.new
+    ### if statment to look at level and give you what opponent and save opponent to global variable = current_opponent
+    choosefight = prompt.select(["Opponent Info", "Start Fight"])
     if choosefight == "Opponent Info"
         opponentinfo
     else 
@@ -273,6 +266,7 @@ def realfightinfo
 end
 
 def opponentinfo
+    prompt = TTY::Prompt.new
     prompt.say("#{$user.trainer_name}: Your opponent is #{opponents.name}.")
     prompt.say("#{$user.trainer_name}: Keep your gloves up and stay focused!")
     sleep(.75)
@@ -283,18 +277,71 @@ def opponentinfo
 end
 
 def choosemoves
+    prompt = TTY::Prompt.new
     array_all_moves = []
     ## add usermoves to array (all possible)
     choices = array_all_moves
 user_move_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
-array_user_moves_choices = []
+$array_user_moves_choices = []
 ## big if statement/.each to see if each item in array_all_moves is included in user_move_choices if so add that move to 
 ## array_user_moves_choices
 
 #done with user
 opponent_move_choices = []
 #grabs all the highest level moves for the users level
+makemove
+end
 
+def makemove
+    prompt = TTY::Prompt.new
+    #below is trainer tip before every move
+    prompt.say("#{$user.trainer_name}: Your opponent is #{opponents.name}.")
+    user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
+    #do actual damage to opponent
+    if $current_opponent.energy =< 0
+        userwins
+    end 
+    opponent_attack = opponent_move_choices.sample
+    #do actual damage to user
+    ##make sure $user.energy is saved to a global variable
+    if $user.energy =< 0
+        userloses
+    else 
+        choosemoves
+    end
+    ## add a display of health at the choosemoves method (use green for good health, yellow for medium health, red for low)
+    ## health needs to be a global variable
+end
+
+def userwins
+    prompt = TTY::Prompt.new
+    $user.level += 1
+    prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
+    $user.money += ($health * 100)
+    afterwin
+end
+
+def userloses
+    prompt = TTY::Prompt.new
+    $user.money += ($health * 100)
+    high_score = $user.money
+    #add high_score to high score table and see if it's the highest score ever
+end
+
+def afterwin
+    if $user.level == 5
+        prompt.say("#{$user.trainer_name}: Congrats you've won the game!")
+        high_score = $user.money.
+        ##tell them if they beat the high score. tell them their score
+    else
+        prompt.say("#{$user.trainer_name}: Great job #{$current_user}! You've passed level #{$user.level - 1}.")
+        prompt.say("#{$user.trainer_name}: Only #{5 - $user.level} to go!")
+        choosewhenready = prompt.select(["Continue"])
+        if choosewhenready == "Continue"
+            ###loading thing
+            mainmenu
+        end
+    end
 end
 
 intro

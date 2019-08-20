@@ -2,16 +2,14 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> b3ea4b99784cdc00dbc65d056ce0dcc334172fb0
 
 $current_user = nil
 $user = nil
 $password = nil
+$current_opponent = nil
 
 def intro
     prompt = TTY::Prompt.new
@@ -134,13 +132,8 @@ def goodluck
     prompt.say("You're all set! Good luck!")
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
-<<<<<<< HEAD
-        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => '█')
-        100.times { progressbar.increment; sleep(0.1) }
-=======
         progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
         100.times {progressbar.increment; sleep(0.1)}
->>>>>>> b3ea4b99784cdc00dbc65d056ce0dcc334172fb0
     end
 end
 
@@ -264,6 +257,7 @@ end
 
 
 def realfightinfo
+    prompt = TTY::Prompt.new
     choosefight = prompt.select("Opponent Info", ["Start Fight"])
     if choosefight == "Opponent Info"
         opponentinfo
@@ -273,9 +267,10 @@ def realfightinfo
 end
 
 def opponentinfo
+    prompt = TTY::Prompt.new
     prompt.say("#{$user.trainer_name}: Your opponent is #{opponents.name}.")
     prompt.say("#{$user.trainer_name}: Keep your gloves up and stay focused!")
-    sleep(.75)
+    sleep(0.75)
     choosefight = prompt.select("Ready To Start", ["Back"])
     if choosefight == "Back"
         realfightinfo
@@ -283,20 +278,88 @@ def opponentinfo
 end
 
 def choosemoves
+    prompt = TTY::Prompt.new
     array_all_moves = []
-    ## add usermoves to array (all possible)
+    opponent_move_choices = []
+    case $user.level
+    when 1
+        Moveset.all.select do |moves|
+            if moves.level == 1
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+                opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+        end
+    when 2
+        Moveset.all.select do |moves|
+            if  moves.level == 1
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+            if moves.level == 2
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+                opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+        end
+    when 3
+        Moveset.all.select do |moves|
+            if  moves.level == 1
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+            if moves.level == 2
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+            if moves.level == 3
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+                opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+        end
+    when 4
+        Moveset.all.select do |moves|
+            if  moves.level == 1
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+            if moves.level == 2
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+            if moves.level == 3
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+            if moves.level == 4
+                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+                opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+        end
+    when 5
+        Moveset.all.select do |moves|
+            array_all_movess.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        end
+        Moveset.all.select do |moves|
+            if moves.level == 5
+                opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            end
+        end
+    else
+        "end"
+    end
+
     choices = array_all_moves
-user_move_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
-array_user_moves_choices = []
-## big if statement/.each to see if each item in array_all_moves is included in user_move_choices if so add that move to 
-## array_user_moves_choices
-
-#done with user
-opponent_move_choices = []
-#grabs all the highest level moves for the users level
-
+    prompt.say("Use 'spacebar' to select your moves and press 'Enter' when you are done!")
+    sleep(2.0)
+    user_move_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
+    if user_move_choices.count == 4
+        makemove
+    else
+        prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries!")
+        sleep(2.0)
+        choosemoves
+    end
+    
+    #selecting opponent based off $user level
+    Opponent.all.select do |opponent|
+        if $user.level == opponent.level
+            $current_opponent = opponent
+        end
+    end
 end
-
 intro
 mainmenu
 

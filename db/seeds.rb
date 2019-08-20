@@ -118,61 +118,125 @@ mickey_goldmill = Trainer.create({
     :phrase10 => "Congralutions, you're the ultimate fighting champion! Drinks are on you tonight! Ha ha ha!"
 })
 
-moves_level_1 = Moveset.create({
+level_1_jab = Moveset.create({
     :level => 1,
-    :str_moves => "Jab",
-    :str_damage => 20,
-    :flex_moves => "Low-Kick",
-    :flex_damage => 18,
-    :end_moves => "Bob and Weave",
-    :end_damage => 15,
-    :power_moves => "Uppercut",
-    :power_damage => 35
+    :moves => "Jab",
+    :damage => 20,
+    :move_type => "str_move"
 })
-moves_level_2 = Moveset.create({
+level_1_lowkick = Moveset.create({
+    :level => 1,
+    :moves => "Low-Kick",
+    :damage => 18,
+    :move_type => "flex_move"
+})
+level_1_bobandweave = Moveset.create({
+    :level => 1,
+    :moves => "Bob and Weave",
+    :damage => 15,
+    :move_type => "end_move"
+})
+level_1_uppercut = Moveset.create({
+    :level => 1,
+    :moves => "Uppercut",
+    :damage => 35,
+    :move_type => "power_move"
+})
+level_2_righthook = Moveset.create({
     :level => 2,
-    :str_moves => "Right Hook",
-    :str_damage => 35,
-    :flex_moves => "Karate Chop",
-    :flex_damage => 32,
-    :end_moves => "Tie Up",
-    :end_damage => 26,
-    :power_moves => "High Jump Kick",
-    :power_damage => 61
+    :moves => "Right Hook",
+    :damage => 35,
+    :move_type => "str_move"
 })
-moves_level_3 = Moveset.create({
+level_2_karatechop = Moveset.create({
+    :level => 2,
+    :moves => "Karate Chop",
+    :damage => 32,
+    :move_type => "flex_move"
+})
+level_2_tieup = Moveset.create({
+    :level => 2,
+    :moves => "Tie Up",
+    :damage => 26,
+    :move_type => "end_move"
+})
+level_2_jumpkick = Moveset.create({
+    :level => 2,
+    :moves => "High Jump Kick",
+    :damage => 61,
+    :move_type => "power_move"
+})
+level_3_focuspunch = Moveset.create({
     :level => 3,
-    :str_moves => "Focus Punch",
-    :str_damage => 61,
-    :flex_moves => "Double Kick",
-    :flex_damage => 56,
-    :end_moves => "Parry",
-    :end_damage => 46,
-    :power_moves => "Knee of Justice",
-    :power_damage => 106
+    :moves => "Focus Punch",
+    :damage => 61,
+    :move_type => "str_move"
 })
-moves_level_4 = Moveset.create({
+level_3_doublekick = Moveset.create({
+    :level => 3,
+    :moves => "Double Kick",
+    :damage => 56,
+    :move_type => "flex_move"
+})
+level_3_parry = Moveset.create({
+    :level => 3,
+    :moves => "Parry",
+    :damage => 46,
+    :move_type => "end_move"
+})
+level_3_knee = Moveset.create({
+    :level => 3,
+    :moves => "Knee of Justice",
+    :damage => 106,
+    :move_type => "power_move"
+}) 
+level_4_hammerfist = Moveset.create({
     :level => 4,
-    :str_moves => "Hammerfist",
-    :str_damage => 90,
-    :flex_moves => "Round House Kick",
-    :flex_damage => 75,
-    :end_moves => "Butterfly Guard",
-    :end_damage => 63,
-    :power_moves => "Uchi Mata",
-    :power_damage => 137
+    :moves => "Hammerfist",
+    :damage => 90,
+    :move_type => "str_move"
 })
-moves_level_5 = Moveset.create({
+level_4_roundkick = Moveset.create({
+    :level => 4,
+    :moves => "Round House Kick",
+    :damage => 75,
+    :move_type => "flex_move"
+})
+level_4_butterflyguard = Moveset.create({
+    :level => 4,
+    :moves => "Butterfly Guard",
+    :damage => 63,
+    :move_type => "end_move"
+})
+level_4_uchimata = Moveset.create({
+    :level => 4,
+    :moves => "Uchi Mata",
+    :damage => 137,
+    :move_type => "power_move"
+})
+level_5_choke = Moveset.create({
     :level => 5,
-    :str_moves => "Rear-Naked Choke",
-    :str_damage => 103,
-    :flex_moves => "Double Leg Takedown",
-    :flex_damage => 89,
-    :end_moves => "Parry + DoubleSlap",
-    :end_damage => 79,
-    :power_moves => "Skull Crusher",
-    :power_damage => 150
-    
+    :moves => "Rear-Naked Choke",
+    :damage => 103,
+    :move_type => "str_move"
+})
+level_5_takedown = Moveset.create({
+    :level => 5,
+    :moves => "Double Leg Takedown",
+    :damage => 89,
+    :move_type => "flex_move"
+})
+level_5_parry = Moveset.create({
+    :level => 5,
+    :moves => "Parry & DoubleSlap",
+    :damage => 79,
+    :move_type => "end_move"
+})
+level_5_skullcrusher = Moveset.create({
+    :level => 5,
+    :moves => "Skull Crusher",
+    :damage => 150,
+    :move_type => "power_move"
 })
 
 workout_level_1 = Workout.create({

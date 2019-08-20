@@ -125,8 +125,65 @@ end
 
 
 while location == 9
-   puts "hi"
-    location = 10
-    #set current user
+    current_user = input6
+    puts "Current user is #{input6}."
+    input9 = prompt.select("Choose your trainer.", ["Stats", "Fight", "Train", "Help"])
+    if input9 == "Stats"
+        location = 10
+    elsif input9 == "Fight"
+        location = 11
+    elsif input9 == "Train"
+        location = 12
+    elsif input9 == "Help"
+        location = 13
+    end
 end
+
+while location == 10
+    prompt.say("MONEY: #{current_user.money}")
+    prompt.say("ENERGY: #{current_user.energy}")
+    prompt.say("STRENGTH: #{current_user.strength}")
+    prompt.say("FLEXIBILITY: #{current_user.flexibility}")
+    prompt.say("ENDURANCE: #{current_user.endurance}")
+    prompt.say("TRAINER: #{current_user.trainer}")
+    prompt.say("WEEKS TRAINED #{current_user.weekstrained}")
+    prompt.say("FIGHTS WON #{current_user.fights_won}")
+    prompt.say("INJURED #{current_user.injured}")
+    prompt.say("GENDER #{current_user.gender}")
+    input10 = prompt.select("Ready to go back?", ["Back"])
+    if input10 == "Back"
+        location = 9
+    end
+end
+
+while location == 11
+    prompt.say("This is where you'll be fighting")
+    input11 = prompt.select("Ready to go back?", ["Back"])
+    if input11 == "Back"
+        location = 9
+    end
+end
+
+while location == 12
+    prompt.say("This is where you'll be training")
+    input12 = prompt.select("Ready to go back?", ["Back"])
+    if input12 == "Back"
+        location = 9
+    end
+end
+
+while location == 13
+    input13 = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
+    if input13 == "How Does Schedule Work"
+        location = 14
+    elsif input13 == "How Do Fights Work"
+        location = 15
+    elsif input13 == "About The Creators"
+        location = 16
+    elsif input13 == "Back"
+        location = 9
+    end
+end
+
+
 

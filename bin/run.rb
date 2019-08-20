@@ -10,6 +10,7 @@ require 'pry'
 # puts "hello world"
 # puts "Hey, it's Michael!"
 $current_user = nil
+$password = nil
 #$emoji1 = prompt.decorate("👻 ")
 def intro
     prompt = TTY::Prompt.new
@@ -50,33 +51,23 @@ def makepassword
     prompt = TTY::Prompt.new
     sex_filter = LanguageFilter::Filter.new matchlist: :profanity, replacement: :stars
     hate_filter = LanguageFilter::Filter.new matchlist: :hate, replacement: :stars
-    #maybe add more later
-    input3 = prompt.mask("Make a password", mask: emoji1)
-    if sex_filter.match?(input3) || hate_filter.match?(input3)
+    emoji1 = prompt.decorate("👻 ")
+    $password = prompt.mask("Make a password", mask: emoji1)
+    if sex_filter.match?($password) || hate_filter.match?($password)
         prompt.say("Please input another password.")
     else
-        location = 4
+        selectgender_trainer_create
     end
 end
 
-def selectgender
+def selectgender_trainer_create
     prompt = TTY::Prompt.new
-    input4 = prompt.select("Choose your gender", ["Male", "Female"])
-    location = 5
-end
-
-def selecttrainer
+    gender = prompt.select("Choose your gender", ["Male", "Female"])
     prompt = TTY::Prompt.new
-    input5 = prompt.select("Choose your trainer.", ["Doc Louis", "Mickey Goldmill", "Red", "Lance"])
-    puts input4
-    puts input5
-    location = 6
-end
-
-def usercreated
+    trainer = prompt.select("Choose your trainer.", ["Doc Louis", "Mickey Goldmill", "Red", "Lance"])
     new_user = User.create({
-        :username => input2,
-        :trainer_name => input5,
+        :username => $current_user,
+        :trainer_name => trainer,
         :energy => 100,
         :money => 0,
         :flex => 1,
@@ -85,10 +76,10 @@ def usercreated
         :fights_won => 0,
         :weeks_trained => 0,
         :injured => false,
-        :password => input3,
-        :gender => input4
+        :password => $password,
+        :gender => gender
     })
-        location = 7
+        goodluck
 end
 
 def loginusername
@@ -117,8 +108,8 @@ def loginpassword
     user.username == $current_user
     checkpassword = user.password
     end
-    password = prompt.mask("Make a password", mask: emoji1)
-    if password == checkpassword
+    $password = prompt.mask("Make a password", mask: emoji1)
+    if $password == checkpassword
         goodluck
     else
         $current_user = nil

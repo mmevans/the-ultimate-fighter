@@ -262,6 +262,41 @@ def about
 end
 
 
+
+def realfightinfo
+    choosefight = prompt.select("Opponent Info", ["Start Fight"])
+    if choosefight == "Opponent Info"
+        opponentinfo
+    else 
+        choosemoves
+    end
+end
+
+def opponentinfo
+    prompt.say("#{$user.trainer_name}: Your opponent is #{opponents.name}.")
+    prompt.say("#{$user.trainer_name}: Keep your gloves up and stay focused!")
+    sleep(.75)
+    choosefight = prompt.select("Ready To Start", ["Back"])
+    if choosefight == "Back"
+        realfightinfo
+    end
+end
+
+def choosemoves
+    array_all_moves = []
+    ## add usermoves to array (all possible)
+    choices = array_all_moves
+user_move_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
+array_user_moves_choices = []
+## big if statement/.each to see if each item in array_all_moves is included in user_move_choices if so add that move to 
+## array_user_moves_choices
+
+#done with user
+opponent_move_choices = []
+#grabs all the highest level moves for the users level
+
+end
+
 intro
 mainmenu
 

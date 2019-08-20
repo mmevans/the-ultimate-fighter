@@ -2,21 +2,13 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 
-#prompt = TTY::Prompt.new
 
 
-# puts "hello world"
-# puts "Hey, it's Barrette!"
-# puts "hello world"
-# puts "Hey, it's Michael!"
 $current_user = nil
 $password = nil
-#$emoji1 = prompt.decorate("👻 ")
+$user = nil
 def intro
     prompt = TTY::Prompt.new
-    #location = 0
-    #emoji1 = prompt.decorate("👻 ")
-    #current_user = nil
     prompt.say("Hello! Welcome to The Ultimate Fighter!")
     signuporsignin
 end 
@@ -38,12 +30,11 @@ def makeusername
     User.all.select do |user|
         array_of_usernames_signup.push(user.username)
     end
-    input2 = prompt.ask("Make a username. It will be your name inside the game.")
-    if array_of_usernames_signup.include?(input2) == false
-    #current_user = user
+    $current_user = prompt.ask("Make a username. It will be your name inside the game.")
+    if array_of_usernames_signup.include?($current_user) == false
         makepassword
     else
-    prompt.say("Sorry, that username is already taken. Please try another!")
+        prompt.say("Sorry, that username is already taken. Please try another!")
     end
 end
 
@@ -77,9 +68,10 @@ def selectgender_trainer_create
         :weeks_trained => 0,
         :injured => false,
         :password => $password,
-        :gender => gender
+        :gender => gender,
+        :level => 1
     })
-        goodluck
+       saveuser
 end
 
 def loginusername
@@ -104,19 +96,31 @@ def loginpassword
     prompt = TTY::Prompt.new
     checkpassword = nil
     emoji1 = prompt.decorate("👻 ")
+
     User.all.each do |user|
-    user.username == $current_user
-    checkpassword = user.password
+        user.username == $current_user
+        checkpassword = user.password
     end
+
     $password = prompt.mask("Make a password", mask: emoji1)
     if $password == checkpassword
-        goodluck
+        saveuser
     else
         $current_user = nil
         prompt.say("Sorry, you've entered the wrong password")
         loginpassword
     end
 end 
+
+def saveuser
+    User.all.each do |user|
+        if user.username == $current_user
+            $user = user
+        end
+    end
+    puts "#{$user}"
+    goodluck
+end
 
 def goodluck
     prompt = TTY::Prompt.new
@@ -125,7 +129,6 @@ end
 
 def mainmenu 
     prompt = TTY::Prompt.new
-    #current_user = input6
     puts "Current user is #{$current_user}."
     input9 = prompt.select("What do you want to do?", ["Stats", "Fight", "Train", "Help"])
     if input9 == "Stats"
@@ -168,8 +171,21 @@ end
 
 def gotrain
     prompt = TTY::Prompt.new
-    prompt.say("This is where you'll be training")
-    input12 = prompt.select("Ready to go back?", ["Back"])
+    if $user.weeks_trained == 0 && $user.level == 1
+        prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up. I've made an easy workout routine you can follow to get you prepared for Chuck Cianwood.")
+        sleep(4.0)
+        array_of_level_1_workouts = []
+        Workout.all.each do |workout|
+            if workout.level == 1
+                array_of_level_1_workouts.push(workout.str_workouts)
+                array_of_level_1_workouts.push(workout.flex_workouts)
+                array_of_level_1_workouts.push(workout.end_workouts)
+            end
+        end
+        puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
+        sleep(2.0)
+        input12 = prompt.select("Ready to go back?", ["Back"])
+    end
     if input12 == "Back"
         mainmenu
     end
@@ -188,6 +204,7 @@ def help
         mainmenu
     end
 end
-
 intro
 mainmenu
+
+

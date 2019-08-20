@@ -1,7 +1,7 @@
 require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
-
+require 'ruby-progressbar'
 
 
 $current_user = nil
@@ -118,7 +118,6 @@ end
 def saveuser
     User.all.each do |user|
         if user.username == $current_user
-
             $user = user 
         end
     end
@@ -129,7 +128,13 @@ end
 def goodluck
     prompt = TTY::Prompt.new
     prompt.say("You're all set! Good luck!")
+    start_game = prompt.select("Are You Ready?", ["START GAME"])
+    if start_game == "START GAME"
+        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
+        100.times {progressbar.increment; sleep(0.1)}
+    end
 end
+
 
 def mainmenu 
     prompt = TTY::Prompt.new
@@ -148,16 +153,17 @@ end
 
 def stats
     prompt = TTY::Prompt.new
-    prompt.say("MONEY: #{current_user.money}")
-    prompt.say("ENERGY: #{current_user.energy}")
-    prompt.say("STRENGTH: #{current_user.strength}")
-    prompt.say("FLEXIBILITY: #{current_user.flexibility}")
-    prompt.say("ENDURANCE: #{current_user.endurance}")
-    prompt.say("TRAINER: #{current_user.trainer}")
-    prompt.say("WEEKS TRAINED #{current_user.weekstrained}")
-    prompt.say("FIGHTS WON #{current_user.fights_won}")
-    prompt.say("INJURED #{current_user.injured}")
-    prompt.say("GENDER #{current_user.gender}")
+    prompt.say("MONEY: #{$user.money}")
+    prompt.say("ENERGY: #{$user.energy}")
+    prompt.say("STRENGTH: #{$user.str}")
+    prompt.say("FLEXIBILITY: #{$user.flex}")
+    prompt.say("ENDURANCE: #{$user.end}")
+    prompt.say("TRAINER: #{$user.trainer_name}")
+    prompt.say("WEEKS TRAINED #{$user.weeks_trained}")
+    prompt.say("FIGHTS WON #{$user.fights_won}")
+    prompt.say("INJURED #{$user.injured}")
+    prompt.say("GENDER #{$user.gender}")
+    prompt.say("GENDER  #{$user.level}")
     input10 = prompt.select("Ready to go back?", ["Back"])
     if input10 == "Back"
         mainmenu
@@ -188,9 +194,9 @@ def gotrain
         end
         puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
         sleep(2.0)
-        input12 = prompt.select("Ready to go back?", ["Back"])
+        goback = prompt.select("Ready to go back?", ["Back"])
     end
-    if input12 == "Back"
+    if goback == "Back"
         mainmenu
     end
 end
@@ -199,7 +205,7 @@ def help
     prompt = TTY::Prompt.new
     choosehelp = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
     if choosehelp == "How Does Schedule Work"
-        schedule
+        schedulehelp
     elsif choosehelp == "How Do Fights Work"
         fighthelp
     elsif choosehelp == "About The Creators"
@@ -214,18 +220,23 @@ def schedulehelp
     prompt = TTY::Prompt.new
     prompt.say("Schedule tells you what your daily schedule looks like. COMING SOON: you'll be able to change your schedule!")
     choosehelp = prompt.select("Ready to go back?", ["Back"])
-
-
-
+    if choosehelp == "Back"
+        help
+    end
 end
 
 def fighthelp
     prompt = TTY::Prompt.new
     prompt.say("It’s a turned-based combat system like pokemon!")
+    sleep(2.0)
     prompt.say("Your moves (and your opponents) do X damage.")
+    sleep(2.0)
     prompt.say("If you run out of energy before your opponent, you lose and have to restart the game.")
+    sleep(2.0)
     choosehelp = prompt.select("Ready to go back?", ["Back"])
-
+    if choosehelp == "Back"
+        help
+    end
 end
 
 def about
@@ -235,6 +246,9 @@ def about
     prompt.say("We were inspired by games like Pokémon and Punchout and wanted to see if we could create our own twist in a CLI applicaiton.")
     prompt.say("When we're not at our desk, you can find us on the 10th floor enjoying the free beer and ping-pong.")
     choosehelp = prompt.select("Ready to go back?", ["Back"])
+    if choosehelp == "Back"
+        help
+    end
 end
 
 

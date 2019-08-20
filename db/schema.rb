@@ -26,14 +26,9 @@ ActiveRecord::Schema.define(version: 10) do
 
   create_table "movesets", force: :cascade do |t|
     t.integer "level"
-    t.string "str_moves"
-    t.integer "str_damage"
-    t.string "flex_moves"
-    t.integer "flex_damage"
-    t.string "end_moves"
-    t.integer "end_damage"
-    t.string "power_moves"
-    t.integer "power_damage"
+    t.string "moves"
+    t.integer "damage"
+    t.string "move_type"
   end
 
   create_table "opponents", force: :cascade do |t|

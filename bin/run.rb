@@ -9,13 +9,13 @@ $password = nil
 $current_opponent = nil
 $health = 100
 $opponent_health = nil
-$array_user_moves_choices
-$opponent_move_choices
-$opponent_full_health
-
+$opponent_full_health = 100
+$array_user_moves_choices = []
+$opponent_move_choices = []
 def intro
     prompt = TTY::Prompt.new
     prompt.say("Hello! Welcome to The Ultimate Fighter!")
+    sleep(0.5)
     signuporsignin
 end 
 
@@ -24,8 +24,10 @@ def signuporsignin
     input1 = prompt.select("Choose your destiny?", ["Sign Up", "Login"])
     if input1 == "Sign Up"
         makeusername
+        sleep(1.0)
     else 
         loginusername
+        sleep(1.0)
     end
 end
 
@@ -38,6 +40,7 @@ def makeusername
     end
     $current_user = prompt.ask("Make a username:")
     if array_of_usernames_signup.include?($current_user) == false
+        sleep(1.0)
         makepassword
     else
         prompt.say("Sorry, that username is already taken. Please try another!")
@@ -137,7 +140,7 @@ def goodluck
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
         progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
-        100.times {progressbar.increment; sleep(0.1)}
+        100.times {progressbar.increment; sleep(0.03)}
     end
 end
 
@@ -271,9 +274,9 @@ def realfightinfo
     end
     prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}.")
     $opponent_health = $current_opponent.energy
-    $opponent_full_health = $opponent_health
     sleep(1.0)
-    choosefight = prompt.select("Select", ["Opponent Info", "Start Fight"])
+    choosefight = prompt.select("Select:", ["Opponent Info","Start Fight"])
+    $opponent_full_health = $opponent_health
     if choosefight == "Opponent Info"
         opponentinfo
     else 
@@ -295,7 +298,6 @@ end
 def choosemoves
     prompt = TTY::Prompt.new
     array_all_moves = []
-    $opponent_move_choices = []
     case $user.level
     when 1
         Moveset.all.select do |moves|
@@ -361,7 +363,7 @@ def choosemoves
     sleep(2.0)
     $array_user_moves_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
     if $array_user_moves_choices.count == 4
-        prompt.say("#{$user.trainer_name}: Quote")
+        prompt.say("#{$user.trainer_name}: QUOTE FROM TRAINER CLASS")
         makemove
     else
         prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries!")
@@ -428,10 +430,62 @@ def afterwin
             100.times {progressbar.increment; sleep(0.1)}
             mainmenu
 
-        end
-    end
-end
+
+# def makemove
+#     prompt = TTY::Prompt.new
+#     prompt.say("#{$user.trainer_name}: Your health is at #{$health}")
+#     sleep(1.0)
+#     prompt.say("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
+#     sleep(1.0)
+#     user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
+#     binding.pry
+#     $opponent_health -= user_attack
+#     if $opponent_health <= 0
+#         userwins
+#     end
+#     opponent_attack = $opponent_move_choices.sample
+#     #do actual damage to user
+#     ##make sure $user.energy is saved to a global variable
+#     if $health <= 0
+#         userloses
+#     else 
+#         choosemoves
+#     end
+#     ## add a display of health at the choosemoves method (use green for good health, yellow for medium health, red for low)
+#     ## health needs to be a global variable
+# end
+
+# # def userwins
+# #     prompt = TTY::Prompt.new
+# #     $user.level += 1
+# #     prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
+# #     $user.money += ($health * 100)
+# #     afterwin
+# # end
+
+# # def userloses
+# #     prompt = TTY::Prompt.new
+# #     $user.money += ($health * 100)
+# #     high_score = $user.money
+# #     #add high_score to high score table and see if it's the highest score ever
+# # end
+
+# # def afterwin
+# #     if $user.level == 5
+# #         prompt.say("#{$user.trainer_name}: Congrats you've won the game!")
+# #         high_score = $user.money.
+# #         ##tell them if they beat the high score. tell them their score
+# #     else
+# #         prompt.say("#{$user.trainer_name}: Great job #{$current_user}! You've passed level #{$user.level - 1}.")
+# #         prompt.say("#{$user.trainer_name}: Only #{5 - $user.level} to go!")
+# #         choosewhenready = prompt.select(["Continue"])
+# #         if choosewhenready == "Continue"
+# #             ###loading thing
+# #             mainmenu
+
+# #         end
+# #     end
+# # end
 intro
 mainmenu
-
 

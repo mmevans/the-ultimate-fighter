@@ -223,7 +223,7 @@ barrette = User.create({
     :weeks_trained => 0,
     :injured => false,
     :password => nil,
-    :gender => nil,
+    :gender => 'Male',
     :level => 1
 })
 
@@ -239,7 +239,7 @@ michael = User.create({
     :weeks_trained => 0,
     :injured => false,
     :password => nil,
-    :gender => nil,
+    :gender => 'Male',
     :level => 1
 })
 

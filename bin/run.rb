@@ -5,8 +5,9 @@ require 'pry'
 
 
 $current_user = nil
-$password = nil
 $user = nil
+$password = nil
+
 def intro
     prompt = TTY::Prompt.new
     prompt.say("Hello! Welcome to The Ultimate Fighter!")
@@ -71,7 +72,9 @@ def selectgender_trainer_create
         :gender => gender,
         :level => 1
     })
-       saveuser
+
+        saveuser
+
 end
 
 def loginusername
@@ -115,11 +118,12 @@ end
 def saveuser
     User.all.each do |user|
         if user.username == $current_user
-            $user = user
+
+            $user = user 
         end
     end
-    puts "#{$user}"
-    goodluck
+    goodluck  
+
 end
 
 def goodluck
@@ -193,17 +197,47 @@ end
 
 def help
     prompt = TTY::Prompt.new
-    input13 = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
-    if input13 == "How Does Schedule Work"
-        location = 14 #still need to do
-    elsif input13 == "How Do Fights Work"
-        location = 15 #still need to do
-    elsif input13 == "About The Creators"
-        location = 16 #still need to do
-    elsif input13 == "Back"
+    choosehelp = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
+    if choosehelp == "How Does Schedule Work"
+        schedule
+    elsif choosehelp == "How Do Fights Work"
+        fighthelp
+    elsif choosehelp == "About The Creators"
+        about
+    elsif choosehelp == "Back"
         mainmenu
     end
 end
+
+
+def schedulehelp
+    prompt = TTY::Prompt.new
+    prompt.say("Schedule tells you what your daily schedule looks like. COMING SOON: you'll be able to change your schedule!")
+    choosehelp = prompt.select("Ready to go back?", ["Back"])
+
+
+
+end
+
+def fighthelp
+    prompt = TTY::Prompt.new
+    prompt.say("It’s a turned-based combat system like pokemon!")
+    prompt.say("Your moves (and your opponents) do X damage.")
+    prompt.say("If you run out of energy before your opponent, you lose and have to restart the game.")
+    choosehelp = prompt.select("Ready to go back?", ["Back"])
+
+end
+
+def about
+    prompt = TTY::Prompt.new
+    prompt.say("Created by Michael Evans and Barrette Banner")
+    prompt.say("We are students at the Flatiron School of Houston.")
+    prompt.say("We were inspired by games like Pokémon and Punchout and wanted to see if we could create our own twist in a CLI applicaiton.")
+    prompt.say("When we're not at our desk, you can find us on the 10th floor enjoying the free beer and ping-pong.")
+    choosehelp = prompt.select("Ready to go back?", ["Back"])
+end
+
+
 intro
 mainmenu
 

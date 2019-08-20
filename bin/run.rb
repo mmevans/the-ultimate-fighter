@@ -2,7 +2,12 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
+<<<<<<< HEAD
+=======
 
+
+
+>>>>>>> b3ea4b99784cdc00dbc65d056ce0dcc334172fb0
 
 $current_user = nil
 $user = nil
@@ -122,7 +127,6 @@ def saveuser
         end
     end
     goodluck  
-
 end
 
 def goodluck
@@ -130,8 +134,13 @@ def goodluck
     prompt.say("You're all set! Good luck!")
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
+<<<<<<< HEAD
+        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => '█')
+        100.times { progressbar.increment; sleep(0.1) }
+=======
         progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
         100.times {progressbar.increment; sleep(0.1)}
+>>>>>>> b3ea4b99784cdc00dbc65d056ce0dcc334172fb0
     end
 end
 
@@ -193,6 +202,7 @@ def gotrain
             end
         end
         puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
+        puts
         sleep(2.0)
         goback = prompt.select("Ready to go back?", ["Back"])
     end

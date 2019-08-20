@@ -3,9 +3,11 @@ require "tty-prompt"
 require 'pry'
 
 
+
 $current_user = nil
 $user = nil
 $password = nil
+
 def intro
     prompt = TTY::Prompt.new
     prompt.say("Hello! Welcome to The Ultimate Fighter!")
@@ -33,7 +35,7 @@ def makeusername
     if array_of_usernames_signup.include?($current_user) == false
         makepassword
     else
-    prompt.say("Sorry, that username is already taken. Please try another!")
+        prompt.say("Sorry, that username is already taken. Please try another!")
     end
 end
 
@@ -70,7 +72,9 @@ def selectgender_trainer_create
         :gender => gender,
         :level => 1
     })
+
         saveuser
+
 end
 
 def loginusername
@@ -95,10 +99,12 @@ def loginpassword
     prompt = TTY::Prompt.new
     checkpassword = nil
     emoji1 = prompt.decorate("👻 ")
+
     User.all.each do |user|
-    user.username == $current_user
-    checkpassword = user.password
+        user.username == $current_user
+        checkpassword = user.password
     end
+
     $password = prompt.mask("Make a password", mask: emoji1)
     if $password == checkpassword
         saveuser
@@ -112,10 +118,12 @@ end
 def saveuser
     User.all.each do |user|
         if user.username == $current_user
+
             $user = user 
         end
     end
     goodluck  
+
 end
 
 def goodluck
@@ -167,8 +175,21 @@ end
 
 def gotrain
     prompt = TTY::Prompt.new
-    prompt.say("This is where you'll be training")
-    input12 = prompt.select("Ready to go back?", ["Back"])
+    if $user.weeks_trained == 0 && $user.level == 1
+        prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up. I've made an easy workout routine you can follow to get you prepared for Chuck Cianwood.")
+        sleep(4.0)
+        array_of_level_1_workouts = []
+        Workout.all.each do |workout|
+            if workout.level == 1
+                array_of_level_1_workouts.push(workout.str_workouts)
+                array_of_level_1_workouts.push(workout.flex_workouts)
+                array_of_level_1_workouts.push(workout.end_workouts)
+            end
+        end
+        puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
+        sleep(2.0)
+        input12 = prompt.select("Ready to go back?", ["Back"])
+    end
     if input12 == "Back"
         mainmenu
     end
@@ -187,6 +208,7 @@ def help
         mainmenu
     end
 end
+
 
 def schedulehelp
     prompt = TTY::Prompt.new
@@ -215,5 +237,8 @@ def about
     choosehelp = prompt.select("Ready to go back?", ["Back"])
 end
 
+
 intro
 mainmenu
+
+

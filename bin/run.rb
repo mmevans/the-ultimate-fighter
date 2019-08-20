@@ -3,9 +3,6 @@ require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
 
-
-
-
 $current_user = nil
 $user = nil
 $password = nil
@@ -175,9 +172,11 @@ end
 def gotofight
     prompt = TTY::Prompt.new
     prompt.say("This is where you'll be fighting")
-    input11 = prompt.select("Ready to go back?", ["Back"])
-    if input11 == "Back"
-     mainmenu
+    input11 = prompt.select("Ready to go back?", ["Go To Fight", "Back"])
+    if input11 == "Go To Fight"
+        realfightinfo
+    else 
+        mainmenu
     end
 end
 
@@ -258,6 +257,7 @@ end
 
 def realfightinfo
     prompt = TTY::Prompt.new
+
     choosefight = prompt.select("Opponent Info", ["Start Fight"])
     if choosefight == "Opponent Info"
         opponentinfo
@@ -357,6 +357,60 @@ def choosemoves
     Opponent.all.select do |opponent|
         if $user.level == opponent.level
             $current_opponent = opponent
+        end
+    end
+end
+
+
+def makemove
+    prompt = TTY::Prompt.new
+    #below is trainer tip before every move
+    prompt.say("#{$user.trainer_name}: Your opponent is #{opponents.name}.")
+    user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
+    #do actual damage to opponent
+    if $current_opponent.energy =< 0
+        userwins
+    end 
+    opponent_attack = opponent_move_choices.sample
+    #do actual damage to user
+    ##make sure $user.energy is saved to a global variable
+    if $user.energy =< 0
+        userloses
+    else 
+        choosemoves
+    end
+    ## add a display of health at the choosemoves method (use green for good health, yellow for medium health, red for low)
+    ## health needs to be a global variable
+end
+
+def userwins
+    prompt = TTY::Prompt.new
+    $user.level += 1
+    prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
+    $user.money += ($health * 100)
+    afterwin
+end
+
+def userloses
+    prompt = TTY::Prompt.new
+    $user.money += ($health * 100)
+    high_score = $user.money
+    #add high_score to high score table and see if it's the highest score ever
+end
+
+def afterwin
+    if $user.level == 5
+        prompt.say("#{$user.trainer_name}: Congrats you've won the game!")
+        high_score = $user.money.
+        ##tell them if they beat the high score. tell them their score
+    else
+        prompt.say("#{$user.trainer_name}: Great job #{$current_user}! You've passed level #{$user.level - 1}.")
+        prompt.say("#{$user.trainer_name}: Only #{5 - $user.level} to go!")
+        choosewhenready = prompt.select(["Continue"])
+        if choosewhenready == "Continue"
+            ###loading thing
+            mainmenu
+
         end
     end
 end

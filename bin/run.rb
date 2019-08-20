@@ -1,8 +1,7 @@
 require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
-
-
+require 'ruby-progressbar'
 
 $current_user = nil
 $user = nil
@@ -118,17 +117,20 @@ end
 def saveuser
     User.all.each do |user|
         if user.username == $current_user
-
             $user = user 
         end
     end
     goodluck  
-
 end
 
 def goodluck
     prompt = TTY::Prompt.new
     prompt.say("You're all set! Good luck!")
+    start_game = prompt.select("Are You Ready?", ["START GAME"])
+    if start_game == "START GAME"
+        progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => '█')
+        100.times { progressbar.increment; sleep(0.1) }
+    end
 end
 
 def mainmenu 
@@ -187,6 +189,7 @@ def gotrain
             end
         end
         puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
+        puts
         sleep(2.0)
         input12 = prompt.select("Ready to go back?", ["Back"])
     end
@@ -214,18 +217,23 @@ def schedulehelp
     prompt = TTY::Prompt.new
     prompt.say("Schedule tells you what your daily schedule looks like. COMING SOON: you'll be able to change your schedule!")
     choosehelp = prompt.select("Ready to go back?", ["Back"])
-
-
-
+    if choosehelp == "Back"
+        help
+    end
 end
 
 def fighthelp
     prompt = TTY::Prompt.new
     prompt.say("It’s a turned-based combat system like pokemon!")
+    sleep(2.0)
     prompt.say("Your moves (and your opponents) do X damage.")
+    sleep(2.0)
     prompt.say("If you run out of energy before your opponent, you lose and have to restart the game.")
+    sleep(2.0)
     choosehelp = prompt.select("Ready to go back?", ["Back"])
-
+    if choosehelp == "Back"
+        help
+    end
 end
 
 def about
@@ -235,6 +243,9 @@ def about
     prompt.say("We were inspired by games like Pokémon and Punchout and wanted to see if we could create our own twist in a CLI applicaiton.")
     prompt.say("When we're not at our desk, you can find us on the 10th floor enjoying the free beer and ping-pong.")
     choosehelp = prompt.select("Ready to go back?", ["Back"])
+    if choosehelp == "Back"
+        help
+    end
 end
 
 

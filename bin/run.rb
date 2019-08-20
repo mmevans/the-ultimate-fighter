@@ -2,144 +2,154 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 
-prompt = TTY::Prompt.new
+#prompt = TTY::Prompt.new
 
 
 # puts "hello world"
 # puts "Hey, it's Barrette!"
 # puts "hello world"
 # puts "Hey, it's Michael!"
-location = 0
-emoji1 = prompt.decorate("👻 ")
-current_user = nil
-while location == 0
-  prompt.say("Hello! Welcome to The Ultimate Fighter!")
-  location = 1
-end
-
-
-while location == 1
-    input1 = prompt.select("Choose your destiny?", ["Sign Up", "Login"])
-    if input1 == "Sign Up"
-        location = 2
-    else 
-        location = 7
-    end
+$current_user = nil
+#$emoji1 = prompt.decorate("👻 ")
+def intro
+    prompt = TTY::Prompt.new
+    #location = 0
+    #emoji1 = prompt.decorate("👻 ")
+    #current_user = nil
+    prompt.say("Hello! Welcome to The Ultimate Fighter!")
+    signuporsignin
 end 
 
+def signuporsignin
+    prompt = TTY::Prompt.new
+    input1 = prompt.select("Choose your destiny?", ["Sign Up", "Login"])
+    if input1 == "Sign Up"
+        makeusername
+    else 
+        loginusername
+    end
+end
 
-while location == 2
+def makeusername
+    prompt = TTY::Prompt.new
     array_of_usernames_signup = []
     emoji1 = prompt.decorate("👻 ")
     User.all.select do |user|
-       array_of_usernames_signup.push(user.username)
+        array_of_usernames_signup.push(user.username)
     end
     input2 = prompt.ask("Make a username. It will be your name inside the game.")
     if array_of_usernames_signup.include?(input2) == false
-        #current_user = user
-        #start
-        
-        #finish
-        location = 3
+    #current_user = user
+        makepassword
     else
-        prompt.say("Sorry, that username is already taken. Please try another!")
+    prompt.say("Sorry, that username is already taken. Please try another!")
     end
-
-
-    ### add username to db
 end
 
-while location == 3
+def makepassword
+    prompt = TTY::Prompt.new
     sex_filter = LanguageFilter::Filter.new matchlist: :profanity, replacement: :stars
     hate_filter = LanguageFilter::Filter.new matchlist: :hate, replacement: :stars
     #maybe add more later
     input3 = prompt.mask("Make a password", mask: emoji1)
-
     if sex_filter.match?(input3) || hate_filter.match?(input3)
         prompt.say("Please input another password.")
     else
         location = 4
     end
-
 end
 
-while location == 4
+def selectgender
+    prompt = TTY::Prompt.new
     input4 = prompt.select("Choose your gender", ["Male", "Female"])
     location = 5
-
 end
 
-while location == 5
+def selecttrainer
+    prompt = TTY::Prompt.new
     input5 = prompt.select("Choose your trainer.", ["Doc Louis", "Mickey Goldmill", "Red", "Lance"])
     puts input4
     puts input5
     location = 6
 end
 
-while location == 6
+def usercreated
     new_user = User.create({
-            :username => input2,
-            :trainer_name => input5,
-            :energy => 100,
-            :money => 0,
-            :flex => 1,
-            :str => 1,
-            :end => 1,
-            :fights_won => 0,
-            :weeks_trained => 0,
-            :injured => false,
-            :password => input3,
-            :gender => input4
-        })
-    location = 7
+        :username => input2,
+        :trainer_name => input5,
+        :energy => 100,
+        :money => 0,
+        :flex => 1,
+        :str => 1,
+        :end => 1,
+        :fights_won => 0,
+        :weeks_trained => 0,
+        :injured => false,
+        :password => input3,
+        :gender => input4
+    })
+        location = 7
 end
 
-while location == 7
+def loginusername
+    prompt = TTY::Prompt.new
+    username = nil
     array_of_usernames_login = []
-    input6 = prompt.ask("What is your username?")
+    username = prompt.ask("What is your username?")
     User.all.select do |user|
         array_of_usernames_login.push(user.username)
-     end
-    if array_of_usernames_login.include?(input6) == false
+    end
+    if array_of_usernames_login.include?(username) == false
         prompt.say("Sorry that username doesn't exist.")
-        location = 1
+        signuporsignin
     else 
-        location = 8
+        $current_user = username
+        puts "Current user is #{$current_user}."
+        loginpassword
     end
-end
+end  
 
-
-while location == 8
-    input7 = nil
+def loginpassword
+    prompt = TTY::Prompt.new
+    checkpassword = nil
+    emoji1 = prompt.decorate("👻 ")
     User.all.each do |user|
-       user.username == input6
-       input7 = user.password
-     end
-     input8 = prompt.mask("Make a password", mask: emoji1)
-     if input7 == input8
-        location = 9
-     else
+    user.username == $current_user
+    checkpassword = user.password
+    end
+    password = prompt.mask("Make a password", mask: emoji1)
+    if password == checkpassword
+        goodluck
+    else
+        $current_user = nil
         prompt.say("Sorry, you've entered the wrong password")
-     end
+        loginpassword
+    end
+end 
+
+def goodluck
+    prompt = TTY::Prompt.new
+    prompt.say("You're all set! Good luck!")
 end
 
-
-while location == 9
-    current_user = input6
-    puts "Current user is #{input6}."
-    input9 = prompt.select("Choose your trainer.", ["Stats", "Fight", "Train", "Help"])
+def mainmenu 
+    prompt = TTY::Prompt.new
+    #current_user = input6
+    puts "Current user is #{$current_user}."
+    input9 = prompt.select("What do you want to do?", ["Stats", "Fight", "Train", "Help"])
     if input9 == "Stats"
-        location = 10
+        stats
     elsif input9 == "Fight"
-        location = 11
+        gotofight
     elsif input9 == "Train"
-        location = 12
+        gotrain
     elsif input9 == "Help"
-        location = 13
+        help
     end
 end
 
-while location == 10
+def stats
+    prompt = TTY::Prompt.new
     prompt.say("MONEY: #{current_user.money}")
     prompt.say("ENERGY: #{current_user.energy}")
     prompt.say("STRENGTH: #{current_user.strength}")
@@ -152,38 +162,41 @@ while location == 10
     prompt.say("GENDER #{current_user.gender}")
     input10 = prompt.select("Ready to go back?", ["Back"])
     if input10 == "Back"
-        location = 9
+        mainmenu
     end
 end
 
-while location == 11
+def gotofight
+    prompt = TTY::Prompt.new
     prompt.say("This is where you'll be fighting")
     input11 = prompt.select("Ready to go back?", ["Back"])
     if input11 == "Back"
-        location = 9
+     mainmenu
     end
 end
 
-while location == 12
+def gotrain
+    prompt = TTY::Prompt.new
     prompt.say("This is where you'll be training")
     input12 = prompt.select("Ready to go back?", ["Back"])
     if input12 == "Back"
-        location = 9
+        mainmenu
     end
 end
 
-while location == 13
+def help
+    prompt = TTY::Prompt.new
     input13 = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
     if input13 == "How Does Schedule Work"
-        location = 14
+        location = 14 #still need to do
     elsif input13 == "How Do Fights Work"
-        location = 15
+        location = 15 #still need to do
     elsif input13 == "About The Creators"
-        location = 16
+        location = 16 #still need to do
     elsif input13 == "Back"
-        location = 9
+        mainmenu
     end
 end
 
-
-
+intro
+mainmenu

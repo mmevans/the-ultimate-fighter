@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 10) do
   create_table "opponents", force: :cascade do |t|
     t.string "name"
     t.string "gender"
+    t.integer "level"
     t.integer "energy"
     t.integer "str"
     t.integer "flex"

@@ -9,7 +9,7 @@ $password = nil
 $current_opponent = nil
 $health = 100
 $opponent_health = nil
-
+$opponent_full_health = 100
 $array_user_moves_choices = []
 $opponent_move_choices = []
 def intro
@@ -38,7 +38,6 @@ def makeusername
     User.all.select do |user|
         array_of_usernames_signup.push(user.username)
     end
-    #
     $current_user = prompt.ask("Make a username:")
     if array_of_usernames_signup.include?($current_user) == false
         sleep(1.0)
@@ -277,6 +276,7 @@ def realfightinfo
     $opponent_health = $current_opponent.energy
     sleep(1.0)
     choosefight = prompt.select("Select:", ["Opponent Info","Start Fight"])
+    $opponent_full_health = $opponent_health
     if choosefight == "Opponent Info"
         opponentinfo
     else 
@@ -371,6 +371,64 @@ def choosemoves
         choosemoves
     end
 end
+
+
+def makemove
+    prompt = TTY::Prompt.new
+    if $health >= $opponent_full_health * 0.75
+        prompt.ok("#{$user.trainer_name}: Your health is at #{$health}")
+    elsif $health >= $opponent_full_health * 0.45
+        prompt.warn("#{$user.trainer_name}: Your health is at #{$health}")
+    else
+        prompt.error("#{$user.trainer_name}: Your health is at #{$health}")
+    end
+    sleep(1.0)
+    prompt.say("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
+    sleep(1.0)
+    user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
+    #do actual damage to opponent
+    if $opponent_health <= 0
+        userwins
+    end 
+    opponent_attack = $opponent_move_choices.sample
+    #do actual damage to user
+    if $user.energy <=0
+        userloses
+    else 
+        choosemoves
+    end
+    ## add a display of health at the choosemoves method (use green for good health, yellow for medium health, red for low)
+    ## health needs to be a global variable
+end
+
+def userwins
+    prompt = TTY::Prompt.new
+    $user.level += 1
+    prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
+    $user.money += ($health * 100)
+    afterwin
+end
+
+def userloses
+    prompt = TTY::Prompt.new
+    $user.money += ($health * 100)
+    high_score = $user.money
+    #add high_score to high score table and see if it's the highest score ever
+end
+
+def afterwin
+    if $user.level == 5
+        prompt.say("#{$user.trainer_name}: Congrats you've won the game!")
+        high_score = $user.money.
+        ##tell them if they beat the high score. tell them their score
+    else
+        prompt.say("#{$user.trainer_name}: Great job #{$current_user}! You've passed level #{$user.level - 1}.")
+        prompt.say("#{$user.trainer_name}: Only #{5 - $user.level} to go!")
+        choosewhenready = prompt.select(["Continue"])
+        if choosewhenready == "Continue"
+            progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
+            100.times {progressbar.increment; sleep(0.1)}
+            mainmenu
 
 
 # def makemove

@@ -147,27 +147,32 @@ moves_level_5 = Moveset.create({
 workout_level_1 = Workout.create({
     :str_workouts => "Knee Push-ups",
     :flex_workouts => "Calf Stretch",
-    :end_workouts => "Elliptical"
+    :end_workouts => "Elliptical",
+    :level => 1
 })
 workout_level_2 = Workout.create({
     :str_workouts => "Push-ups",
     :flex_workouts => "Squats",
-    :end_workouts => "Cycling"
+    :end_workouts => "Cycling",
+    :level => 2
 })
 workout_level_3 = Workout.create({
     :str_workouts => "Bicep Curls",
     :flex_workouts => "Tricep Extensions",
-    :end_workouts => "Running"
+    :end_workouts => "Running",
+    :level => 3
 })
 workout_level_4 = Workout.create({
     :str_workouts => "Bench Press",
     :flex_workouts => "Deadlifts",
-    :end_workouts => "Tabata"
+    :end_workouts => "Tabata",
+    :level => 4
 })
 workout_level_5 = Workout.create({
     :str_workouts => "Weighted Pull-ups",
     :flex_workouts => "Weighted Dips",
-    :end_workouts => "Running Suicides"
+    :end_workouts => "Running Suicides",
+    :level => 5
 })
 
 schedule_level_1 = Schedule.create({
@@ -217,7 +222,9 @@ barrette = User.create({
     :fights_won => 0,
     :weeks_trained => 0,
     :injured => false,
-    :password => nil
+    :password => nil,
+    :gender => 'Male',
+    :level => 1
 })
 
 michael = User.create({
@@ -231,7 +238,9 @@ michael = User.create({
     :fights_won => 0,
     :weeks_trained => 0,
     :injured => false,
-    :password => nil
+    :password => nil,
+    :gender => 'Male',
+    :level => 1
 })
 
 

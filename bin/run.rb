@@ -2,21 +2,12 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 
-#prompt = TTY::Prompt.new
 
-
-# puts "hello world"
-# puts "Hey, it's Barrette!"
-# puts "hello world"
-# puts "Hey, it's Michael!"
 $current_user = nil
+$user = nil
 $password = nil
-#$emoji1 = prompt.decorate("👻 ")
 def intro
     prompt = TTY::Prompt.new
-    #location = 0
-    #emoji1 = prompt.decorate("👻 ")
-    #current_user = nil
     prompt.say("Hello! Welcome to The Ultimate Fighter!")
     signuporsignin
 end 
@@ -38,9 +29,8 @@ def makeusername
     User.all.select do |user|
         array_of_usernames_signup.push(user.username)
     end
-    input2 = prompt.ask("Make a username. It will be your name inside the game.")
-    if array_of_usernames_signup.include?(input2) == false
-    #current_user = user
+    $current_user = prompt.ask("Make a username. It will be your name inside the game.")
+    if array_of_usernames_signup.include?($current_user) == false
         makepassword
     else
     prompt.say("Sorry, that username is already taken. Please try another!")
@@ -77,9 +67,10 @@ def selectgender_trainer_create
         :weeks_trained => 0,
         :injured => false,
         :password => $password,
-        :gender => gender
+        :gender => gender,
+        :level => 1
     })
-        goodluck
+        saveuser
 end
 
 def loginusername
@@ -110,13 +101,22 @@ def loginpassword
     end
     $password = prompt.mask("Make a password", mask: emoji1)
     if $password == checkpassword
-        goodluck
+        saveuser
     else
         $current_user = nil
         prompt.say("Sorry, you've entered the wrong password")
         loginpassword
     end
 end 
+
+def saveuser
+    User.all.each do |user|
+        if user.username == $current_user
+            $user = user 
+        end
+    end
+    goodluck  
+end
 
 def goodluck
     prompt = TTY::Prompt.new
@@ -125,7 +125,6 @@ end
 
 def mainmenu 
     prompt = TTY::Prompt.new
-    #current_user = input6
     puts "Current user is #{$current_user}."
     input9 = prompt.select("What do you want to do?", ["Stats", "Fight", "Train", "Help"])
     if input9 == "Stats"
@@ -177,16 +176,43 @@ end
 
 def help
     prompt = TTY::Prompt.new
-    input13 = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
-    if input13 == "How Does Schedule Work"
-        location = 14 #still need to do
-    elsif input13 == "How Do Fights Work"
-        location = 15 #still need to do
-    elsif input13 == "About The Creators"
-        location = 16 #still need to do
-    elsif input13 == "Back"
+    choosehelp = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
+    if choosehelp == "How Does Schedule Work"
+        schedule
+    elsif choosehelp == "How Do Fights Work"
+        fighthelp
+    elsif choosehelp == "About The Creators"
+        about
+    elsif choosehelp == "Back"
         mainmenu
     end
+end
+
+def schedulehelp
+    prompt = TTY::Prompt.new
+    prompt.say("Schedule tells you what your daily schedule looks like. COMING SOON: you'll be able to change your schedule!")
+    choosehelp = prompt.select("Ready to go back?", ["Back"])
+
+
+
+end
+
+def fighthelp
+    prompt = TTY::Prompt.new
+    prompt.say("It’s a turned-based combat system like pokemon!")
+    prompt.say("Your moves (and your opponents) do X damage.")
+    prompt.say("If you run out of energy before your opponent, you lose and have to restart the game.")
+    choosehelp = prompt.select("Ready to go back?", ["Back"])
+
+end
+
+def about
+    prompt = TTY::Prompt.new
+    prompt.say("Created by Michael Evans and Barrette Banner")
+    prompt.say("We are students at the Flatiron School of Houston.")
+    prompt.say("We were inspired by games like Pokémon and Punchout and wanted to see if we could create our own twist in a CLI applicaiton.")
+    prompt.say("When we're not at our desk, you can find us on the 10th floor enjoying the free beer and ping-pong.")
+    choosehelp = prompt.select("Ready to go back?", ["Back"])
 end
 
 intro

@@ -18,20 +18,18 @@ $frequentflyermiles = 0
 
 def intro
     prompt = TTY::Prompt.new
-    prompt.say("Hello! Welcome to The Ultimate Fighter!")
+    prompt.say("The Ultimate Fighter")
     sleep(0.5)
     signuporsignin
 end 
 
 def signuporsignin
     prompt = TTY::Prompt.new
-    input1 = prompt.select("Choose your destiny?", ["Sign Up", "Login"])
+    input1 = prompt.select("Select:", ["Sign Up", "Login"])
     if input1 == "Sign Up"
         makeusername
-        sleep(1.0)
     else 
         loginusername
-        sleep(1.0)
     end
 end
 
@@ -45,10 +43,11 @@ def makeusername
     end
     $current_user = prompt.ask("Make a username:")
     if array_of_usernames_signup.include?($current_user) == false
-        sleep(1.0)
+        sleep(0.5)
         makepassword
     else
-        prompt.say("Sorry, that username is already taken. Please try another!")
+        prompt.say("Sorry, that username is already taken. Please try another! 'Enter'")
+        sleep(0.5)
         makeusername
     end
 end
@@ -143,7 +142,7 @@ end
 def goodluck
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("You're all set! Good luck!")
+    prompt.say("You're all set. Good luck!")
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
         progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
@@ -156,7 +155,7 @@ end
 def mainmenu 
     puts `clear`
     prompt = TTY::Prompt.new
-    input9 = prompt.select("What do you want to do?", ["Stats", "Fight", "Train", "Help"])
+    input9 = prompt.select("Main Menu:", ["Stats", "Fight", "Train", "Help"])
     if input9 == "Stats"
         stats
     elsif input9 == "Fight"
@@ -171,17 +170,17 @@ end
 def stats
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("MONEY: #{$user.money}")
-    prompt.say("ENERGY: #{$user.energy}")
-    prompt.say("STRENGTH: #{$user.str}")
-    prompt.say("FLEXIBILITY: #{$user.flex}")
-    prompt.say("ENDURANCE: #{$user.end}")
-    prompt.say("TRAINER: #{$user.trainer_name}")
-    prompt.say("WEEKS TRAINED: #{$user.weeks_trained}")
-    prompt.say("FIGHTS WON: #{$user.fights_won}")
-    prompt.say("INJURED: #{$user.injured}")
-    prompt.say("GENDER: #{$user.gender}")
-    prompt.say("LEVEL:  #{$user.level}")
+    prompt.say("Money: #{$user.money}")
+    prompt.say("Energt: #{$user.energy}")
+    prompt.say("Strength: #{$user.str}")
+    prompt.say("Flexibility: #{$user.flex}")
+    prompt.say("Endurance: #{$user.end}")
+    prompt.say("Trainer: #{$user.trainer_name}")
+    prompt.say("Weeks Trained: #{$user.weeks_trained}")
+    prompt.say("Fights Won: #{$user.fights_won}")
+    prompt.say("Inured: #{$user.injured}")
+    prompt.say("Gender: #{$user.gender}")
+    prompt.say("Level:  #{$user.level}")
     input10 = prompt.select("Ready to go back?", ["Back"])
     if input10 == "Back"
         mainmenu
@@ -201,13 +200,26 @@ def gotofight
             mainmenu
         end
     else
-        prompt.say("#{$user.trainer_name}: Woah, you haven't finished your training yet! Your fight doesn't start for another X weeks.")
-        prompt.say("Why don't you head on over to 'Train' in the main menu and take of what needs to be done.")
-        sleep(2.0)
+        5.times do
+            print "."
+            sleep(0.3)
+          end
+        puts ""
+        prompt.say("#{$user.trainer_name}: Woah, you haven't finished your training yet! Your fight doesn't start for another X weeks. 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: Why don't you head on over to 'Train' in the main menu and take of what needs to be done. 'Enter'")
+        gets
         input10 = prompt.select("Ready to go back?", ["Back"])
         if input10 == "Back"
             mainmenu
         end
+    end
+end
+
+def wait
+    3.times do
+        print "."
+        sleep(0.3)
     end
 end
 
@@ -216,7 +228,14 @@ def flight1
     puts `clear`
     prompt = TTY::Prompt.new
     $flightcity = nil
-    prompt.say("Later that day...")
+    print "Later that day"
+    print "."
+    sleep(0.5)
+    print "."
+    sleep(0.5)
+    print "."
+    sleep(0.5)
+    gets
     prompt.say("The Los Angeles Airport")
     sleep(2)
     flight1 = prompt.select("What do you want to do?", ["Go Inside", "Go Back Home"])
@@ -404,9 +423,10 @@ def gotrain
     puts `clear`
     prompt = TTY::Prompt.new
     if $user.weeks_trained == 0 && $user.level == 1
-        prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up.")
-        prompt.say("#{$user.trainer_name}: I've made an easy workout routine you can follow to get you prepared for Chuck Cianwood.")
-        sleep(4.0)
+        prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up. 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: I've made an easy workout routine you can follow to get you prepared for Chuck Cianwood. 'Enter'")
+        gets
         array_of_level_1_workouts = []
         Workout.all.each do |workout|
             if workout.level == 1
@@ -414,44 +434,48 @@ def gotrain
             end
         end
         prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_1_workouts}.")
-        sleep(2.0)
+        sleep(1.5)
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 3 && $user.level == 2
-        prompt.say("#{$user.trainer_name}: Congrats on your first big win! Chuck never had a chance. Ha ha ha!")
-        sleep(2.0)
+        prompt.say("#{$user.trainer_name}: Congrats on your first big win! Chuck never had a chance. Ha ha ha! 'Enter'")
+        gets
         array_of_level_2_workouts = []
         Workout.all.each do |workout|
             if workout.level == 2
                 array_of_level_2_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
             end
         end
-        prompt.say("#{$user.trainer_name}: I went ahead and changed your workout schedule to prepare you for Brawly. I'll tell you more about him closer to the fight.")
-        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: I went ahead and changed your workout schedule to prepare you for Brawly. I'll tell you more about him closer to the fight. 'Enter'")
+        gets
         prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_2_workouts}")
-        sleep(2.0)
+        sleep(0.8)
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 6 && $user.level == 3
-        prompt.say("#{$user.trainer_name}: Hot damn, that's two wins in a row! You're making a name for yourself out there.")
-        prompt.say("#{$user.trainer_name}: Some people are calling you the next Ultimate Fighter! Don't let it get to your head, you still have a long way to go.")
-        sleep(2.0)
+        prompt.say("#{$user.trainer_name}: Hot damn, that's two wins in a row! You're making a name for yourself out there. 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: Some people are calling you the next Ultimate Fighter! Don't let it get to your head, you still have a long way to go. 'Enter'")
+        gets
         array_of_level_3_workouts = []
         Workout.all.each do |workout|
             if workout.level == 3
                 array_of_level_3_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
             end
         end
-        prompt.say("#{$user.trainer_name}: Your next opponent is Maylene. She's got speed and power in her kicks... unlike you! Ha ha ha!")
-        sleep(1.0)
-        prompt.say("#{$user.username}: .....")
-        sleep(1.0)
-        prompt.say("#{$user.trainer_name}: Jeez I'm kidding!")
-        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: Your next opponent is Maylene. She's got speed and power in her kicks... unlike you! Ha ha ha! 'Enter'")
+        gets
+        4.times do
+            print "."
+            sleep(0.5)
+        end
+        prompt.say("#{$user.trainer_name}: Jeez I'm kidding! 'Enter'")
+        gets
         prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_3_workouts}")
-        sleep(2.0)
+        sleep(0.8)
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 9 && $user.level == 4
-        prompt.say("#{$user.trainer_name}: Congragulations on you're third win! I'm beginning to think you have a shot at the title, but you need at least 4 wins to challenge the champion.")
-        prompt.say("#{$user.trainer_name}: You'll need to dedicate a lot more time to training from now on. Your next opponent, Korrina, is an animal in the cage.")
+        prompt.say("#{$user.trainer_name}: Congragulations on you're third win! I'm beginning to think you have a shot at the title, but you need at least 4 wins to challenge the champion. 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: You'll need to dedicate a lot more time to training from now on. Your next opponent, Korrina, is an animal in the cage. 'Enter'")
         array_of_level_4_workouts = []
         Workout.all.each do |workout|
             if workout.level == 4
@@ -461,16 +485,16 @@ def gotrain
         prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_4_workouts}.")
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 12 && $user.level == 5
-        prompt.say("#{$user.trainer_name}: Holy shit you fucking madman. The absolute madman! I always knew you had it in you, ever since your first fight with Chuck.")
-        sleep(1.0)
-        prompt.say("#{$user.trainer_name}: But this is it.")
-        sleep(1.0)
-        prompt.say("#{$user.trainer_name}: No more games...")
-        sleep(1.0)
-        prompt.say("#{$user.trainer_name}: No more cheap tricks..")
-        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: Holy shit you fucking madman. The absolute madman! I always knew you had it in you, ever since your first fight with Chuck. 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: But this is it. 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: No more games... 'Enter'")
+        gets
+        prompt.say("#{$user.trainer_name}: No more cheap tricks.. 'Enter'")
+        gets
         prompt.say("#{$user.trainer_name}: You're fighting the reigning Ultimate Fighter: Mike Tyson. He's the toughest motherfucker to walk into that octagon.")
-        sleep(1.0)
+        gets
         prompt.say("#{$user.trainer_name}: .......")
         array_of_level_5_workouts = []
         Workout.all.each do |workout|
@@ -487,17 +511,51 @@ def gotrain
     if goback == "Back"
         mainmenu
     else
-        progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
-        100.times {progressbar.increment; sleep(0.005)}
-        sleep(1.0)
-        prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha!")
-        if $user.level == 1
+        if $user.level == 1 && $user.weeks_trained == 0
+            progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
+            100.times {progressbar.increment; sleep(0.005)}
+            sleep(0.5)
+            prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter''")
             $user.weeks_trained += 3
+            gets
+            mainmenu
+        elsif $user.level == 2 && $user.weeks_trained == 3
+            progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
+            100.times {progressbar.increment; sleep(0.005)}
+            gets
+            prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
+            $user.weeks_trained += 3
+            gets
+            mainmenu
+        elsif $user.level == 3 && $user.weeks_trained == 6
+            progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
+            100.times {progressbar.increment; sleep(0.005)}
+            gets
+            prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
+            $user.weeks_trained += 3
+            gets
+            mainmenu
+        elsif $user.level == 4 && $user.weeks_trained == 9
+            progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
+            100.times {progressbar.increment; sleep(0.005)}
+            gets
+            prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
+            $user.weeks_trained += 3
+            gets
+            mainmenu
+        elsif $user.level == 5 && $user.weeks_trained == 12
+            progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
+            100.times {progressbar.increment; sleep(0.005)}
+            gets
+            prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
+            $user.weeks_trained += 3
+            gets
+            mainmenu
         else
-            $user.weeks_trained += 2
+            puts "Hey it looks like you've already done your training! Head over to the airport and catch your flight! 'Enter'"
+            gets
+            mainmenu
         end
-        sleep(1.0)
-        mainmenu
     end
 end
 
@@ -506,11 +564,11 @@ def help
     puts `clear`
     prompt = TTY::Prompt.new
     choosehelp = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
-    if choosehelp == "How Does Schedule Work"
+    if choosehelp == "How does schedule work?"
         schedulehelp
-    elsif choosehelp == "How Do Fights Work"
+    elsif choosehelp == "How do fights work?"
         fighthelp
-    elsif choosehelp == "About The Creators"
+    elsif choosehelp == "About Us!"
         about
     elsif choosehelp == "Back"
         mainmenu
@@ -521,7 +579,23 @@ end
 def schedulehelp
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("Schedule tells you what your daily schedule looks like. COMING SOON: you'll be able to change your schedule!")
+    sleep(0.5)
+    prompt.say("Schedule tells you what your daily schedule looks like. It doesn't have any effect on your fights. 'Enter'")
+    gets
+    prompt.say("We definitley thought it might have some functionality regarding your moves/stats, but alas no 'Enter'")
+    gets
+    4.times do
+        print "."
+        sleep(0.05)
+      end
+    prompt.say("I'm sad just thinking about what could have been 'Enter''")
+    gets
+    4.times do
+        print "."
+        sleep(0.05)
+      end
+    prompt.say("This is michael talking to you btw. 'Enter'")
+    gets
     choosehelp = prompt.select("Ready to go back?", ["Back"])
     if choosehelp == "Back"
         help
@@ -531,12 +605,12 @@ end
 def fighthelp
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("It’s a turned-based combat system like pokemon!")
-    sleep(2.0)
-    prompt.say("Your moves (and your opponents) do X damage.")
-    sleep(2.0)
-    prompt.say("If you run out of energy before your opponent, you lose and have to restart the game.")
-    sleep(2.0)
+    prompt.say("It’s a turned-based combat system like pokemon! 'Enter'")
+    gets
+    prompt.say("Your moves (and your opponents) do X damage. 'Enter'")
+    gets
+    prompt.say("If you run out of energy before your opponent, you lose and have to restart the game. 'Enter'")
+    gets
     choosehelp = prompt.select("Ready to go back?", ["Back"])
     if choosehelp == "Back"
         help
@@ -550,6 +624,7 @@ def about
     prompt.say("We are students at the Flatiron School of Houston.")
     prompt.say("We were inspired by games like Pokémon and Punchout and wanted to see if we could create our own twist in a CLI applicaiton.")
     prompt.say("When we're not at our desk, you can find us on the 10th floor enjoying the free beer and ping-pong.")
+    prompt.say("The score is at least 1-0 to Michael, but who really keeps count ;)")
     choosehelp = prompt.select("Ready to go back?", ["Back"])
     if choosehelp == "Back"
         help
@@ -567,9 +642,9 @@ def realfightinfo
             $current_opponent = opponent
         end
     end
-    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}.")
+    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}. 'Enter'")
     $opponent_health = $current_opponent.energy
-    sleep(1.0)
+    gets
     choosefight = prompt.select("Select:", ["Opponent Info","Start Fight"])
     $opponent_full_health = $opponent_health
     if choosefight == "Opponent Info"
@@ -582,7 +657,7 @@ end
 def opponentinfo
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}.")
+    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}. 'Enter'")
     prompt.say("#{$user.trainer_name}: Keep your gloves up and stay focused!")
     sleep(0.75)
     choosefight = prompt.select("Ready To Start", ["Back"])
@@ -656,7 +731,7 @@ def choosemoves
     end
 
     choices = array_all_moves
-    prompt.say("Use 'spacebar' to select your moves and press 'Enter' when you are done!")
+    prompt.say("Use 'Spacebar' to select your moves and 'Enter' when you are done!")
     sleep(2.0)
     $array_user_moves_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
     if $array_user_moves_choices.count == 4
@@ -680,7 +755,7 @@ def makemove
     else
         prompt.error("#{$user.trainer_name}: Your health is at #{$health}")
     end
-    sleep(3.0)
+    sleep(1.5)
     if $opponent_health >= $opponent_full_health * 0.75
         prompt.ok("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     elsif $opponent_health >= $opponent_full_health * 0.45
@@ -688,7 +763,7 @@ def makemove
     else
         prompt.error("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     end    
-    sleep(2.0)
+    sleep(1.5)
     user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
     Moveset.all.select do |m|
         if user_attack == m.moves
@@ -732,8 +807,8 @@ def userloses
     prompt = TTY::Prompt.new
     $user.money += ($health * 100)
     high_score = $user.money
-    prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score}")
-    sleep(1.0)
+    prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score} 'Enter'")
+    gets
     Highscore.all.each do |highscore|
         if highscore.username == $user.username && high_score > highscore.highscore
             highscore.date = DateTime.now

@@ -16,20 +16,6 @@ $opponent_move_choices = []
 $flightcity = nil 
 $frequentflyermiles = 0
 
-$array_uppercut = []
-$array_highjumpkick = []
-$array_kneeofjustice = []
-$array_uchimata = []
-$array_skullcrusher = []
-$array_jab = []
-$array_righthook = []
-$array_focuspunch = []
-$array_hammerfist = []
-$array_rearnakedchoke = []
-$array_recent_power_moves = []
-$array_recent_strength_moves = []
-$array_available_moves = []
-
 
 
 def intro
@@ -251,6 +237,7 @@ def flight1
     sleep(0.5)
     print "."
     sleep(0.5)
+    puts "  Enter"
     gets
     prompt.say("The Los Angeles Airport")
     sleep(2)
@@ -279,8 +266,18 @@ end
 def flight3
     puts `clear`
     prompt = TTY::Prompt.new
-
     prompt.say("Okay, please select a location.")
+    if $user.level == 1
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Miami")
+    elsif $user.level == 2
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to San Antonio")
+    elsif $user.level == 3
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Seattle")
+    elsif $user.level == 4
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Houston")
+    elsif $user.level == 5
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to New York")
+    end
     flight3 = prompt.select("Scroll down to see more options.", ["Miami", "New York", "Houston", "San Antonio", "Seattle", "Denver", "Nashville" ])
     if flight3 == "Miami"
         $flightcity = "Miami"
@@ -311,7 +308,7 @@ def flightweather
     if $user.level == 1
         buyticketlevel1
     else
-        buyticket
+        asktime
     end
 end
 
@@ -360,7 +357,7 @@ def callmom
         if help3 == "Check Frequent Flyer Miles"
             checkmiles
         else 
-            buyticket
+            asktime
         end
     end
 end
@@ -370,29 +367,35 @@ def checkmiles
     prompt = TTY::Prompt.new
     prompt.say("Frequent Flyer Miles: #{$frequentflyermiles}")
     sleep(1.5)
+    asktime
+end
+
+def asktime
+    prompt = TTY::Prompt.new
+    time = prompt.select("What time would you like to go at?", ["8:30AM", "11:45AM", "3:15PM"])
     buyticket
 end
 
 def buyticket
     puts `clear`
     prompt = TTY::Prompt.new
-    time = prompt.select("What time would you like to go at?", ["8:30AM", "11:45AM", "3:15PM"])
+    #time = prompt.select("What time would you like to go at?", ["8:30AM", "11:45AM", "3:15PM"])
     payment = prompt.select("Great! And how would you like to pay for that?", ["Cash", "Card", "Frequent Flyer Miles"])
     if payment == "Cash"
         if $user.level > 1
             prompt.say("Great!")
             preptoboardplane
         else
-            prompt.say("Sorry, I'm afraid that's not enough. Try again.") #maybe create new def to not repeat time
-            buyticket #change this if new def
+            prompt.say("Sorry, I'm afraid that's not enough. Try again.") 
+            buyticket 
         end
     elsif payment == "Card"
         if $user.level > 1
             prompt.say("Great!")
             preptoboardplane
         else
-            prompt.say("Sorry, I'm afraid that's not enough. Try again.") #maybe create new def to not repeat time
-            buyticket #change this if new def
+            prompt.say("Sorry, I'm afraid that's not enough. Try again.") 
+            buyticket 
         end
     elsif payment == "Frequent Flyer Miles"
         prompt.say("Great!")
@@ -810,8 +813,15 @@ def makemove
             $array_available_moves << move
         end
     end
+    $array_available_moves_opponent = []
+    $opponent_move_choices.each do |move|
+        if $array_recent_power_moves.include?(move) == false && $array_recent_strength_moves.include?(move) == false
+            $array_available_moves_opponent << move
+        end
+    end
 
     user_attack = prompt.select("Choose a move!", $array_available_moves)
+
     #below is new work
     $array_uppercut.pop 
     $array_highjumpkick.pop 
@@ -857,7 +867,9 @@ def makemove
         $opponent_health = 0
         userwins
     else
-        opponent_attack = $opponent_move_choices.sample
+        opponent_attack = $array_available_moves_opponent.sample ##here
+        puts $array_available_moves_opponent
+        gets
         Moveset.all.select do |m|
             if opponent_attack == m.moves
                 $health -= m.damage
@@ -880,7 +892,6 @@ def userwins
     sleep(1.5) 
     prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
     $user.money += ($health * 100)
-    $user.weeks_trained += 1
     $health = 100
     afterwin
 end

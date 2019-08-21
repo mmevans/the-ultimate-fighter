@@ -264,8 +264,9 @@ def about
 end
 
 
-
+# build out conditional to check if weeks_trained is the right amount
 def realfightinfo
+    $health *= $user.level
     prompt = TTY::Prompt.new
     Opponent.all.select do |opponent|
         if $user.level == opponent.level
@@ -279,7 +280,7 @@ def realfightinfo
     $opponent_full_health = $opponent_health
     if choosefight == "Opponent Info"
         opponentinfo
-    else 
+    else
         choosemoves
     end
 end
@@ -300,58 +301,58 @@ def choosemoves
     array_all_moves = []
     case $user.level
     when 1
-        Moveset.all.select do |moves|
-            if moves.level == 1
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
-                $opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        Moveset.all.select do |m|
+            if m.level == 1
+                array_all_moves.push(m.moves)
+                $opponent_move_choices.push(m.moves)
             end
         end
     when 2
-        Moveset.all.select do |moves|
-            if  moves.level == 1
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        Moveset.all.select do |m|
+            if  m.level == 1
+                array_all_moves.push(m.moves)
             end
-            if moves.level == 2
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
-                $opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            if m.level == 2
+                array_all_moves.push(m.moves)
+                $opponent_move_choices.push(m.moves)
             end
         end
     when 3
-        Moveset.all.select do |moves|
-            if  moves.level == 1
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        Moveset.all.select do |m|
+            if  m.level == 1
+                array_all_moves.push(m.moves)
             end
-            if moves.level == 2
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            if m.level == 2
+                array_all_moves.push(m.moves)
             end
-            if moves.level == 3
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
-                $opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            if m.level == 3
+                array_all_moves.push(m.moves)
+                $opponent_move_choices.push(m.moves)
             end
         end
     when 4
-        Moveset.all.select do |moves|
-            if  moves.level == 1
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        Moveset.all.select do |m|
+            if  m.level == 1
+                array_all_moves.push(m.moves)
             end
-            if moves.level == 2
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            if m.level == 2
+                array_all_moves.push(m.moves)
             end
-            if moves.level == 3
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            if m.level == 3
+                array_all_moves.push(m.moves)
             end
-            if moves.level == 4
-                array_all_moves.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
-                $opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+            if m.level == 4
+                array_all_moves.push(m.moves)
+                $opponent_move_choices.push(m.moves)
             end
         end
     when 5
-        Moveset.all.select do |moves|
-            array_all_movess.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        Moveset.all.select do |m|
+            array_all_movess.push(m.moves)
         end
-        Moveset.all.select do |moves|
-            if moves.level == 5
-                $opponent_move_choices.push(moves.str_moves, moves.flex_moves, moves.end_moves, moves.power_moves)
+        Moveset.all.select do |m|
+            if m.level == 5
+                $opponent_move_choices.push(m.moves)
             end
         end
     else
@@ -386,19 +387,26 @@ def makemove
     prompt.say("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     sleep(1.0)
     user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
-    #do actual damage to opponent
+    Moveset.all.select do |m|
+        if user_attack == m.moves
+            $opponent_health -= m.damage
+        end
+    end
     if $opponent_health <= 0
         userwins
+    else
+        opponent_attack = $opponent_move_choices.sample
+        Moveset.all.select do |m|
+            if opponent_attack == m.moves
+                $health -= m.damage
+            end
+        end
     end 
-    opponent_attack = $opponent_move_choices.sample
-    #do actual damage to user
-    if $user.energy <=0
+    if $health <= 0
         userloses
     else 
-        choosemoves
+        makemove
     end
-    ## add a display of health at the choosemoves method (use green for good health, yellow for medium health, red for low)
-    ## health needs to be a global variable
 end
 
 def userwins
@@ -406,6 +414,7 @@ def userwins
     $user.level += 1
     prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
     $user.money += ($health * 100)
+    $health = 100
     afterwin
 end
 
@@ -417,18 +426,23 @@ def userloses
 end
 
 def afterwin
+    prompt = TTY::Prompt.new
     if $user.level == 5
         prompt.say("#{$user.trainer_name}: Congrats you've won the game!")
-        high_score = $user.money.
+        high_score = $user.money
         ##tell them if they beat the high score. tell them their score
     else
         prompt.say("#{$user.trainer_name}: Great job #{$current_user}! You've passed level #{$user.level - 1}.")
         prompt.say("#{$user.trainer_name}: Only #{5 - $user.level} to go!")
-        choosewhenready = prompt.select(["Continue"])
+        puts "error"
+        choosewhenready = prompt.select("Select:", ["Continue"])
         if choosewhenready == "Continue"
             progressbar = ProgressBar.create(:title => "Loading", :starting_at => 0, :total => 100, :progress_mark => "█")
             100.times {progressbar.increment; sleep(0.1)}
             mainmenu
+        end
+    end
+end
 
 
 # def makemove

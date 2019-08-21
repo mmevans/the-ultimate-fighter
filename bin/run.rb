@@ -2,6 +2,7 @@ require_relative "../config/environment"
 require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
+#require 'tty-cursor'
 
 $current_user = nil
 $user = nil
@@ -14,6 +15,7 @@ $array_user_moves_choices = []
 $opponent_move_choices = []
 $flightcity = nil 
 $frequentflyermiles = 0
+
 def intro
     prompt = TTY::Prompt.new
     prompt.say("Hello! Welcome to The Ultimate Fighter!")
@@ -150,6 +152,7 @@ def goodluck
 end
 
 
+
 def mainmenu 
     puts `clear`
     prompt = TTY::Prompt.new
@@ -188,11 +191,23 @@ end
 def gotofight
     puts `clear`
     prompt = TTY::Prompt.new
-    input11 = prompt.select("What do you want to do?", ["Go To Fight", "Back"])
-    if input11 == "Go To Fight"
-        flight1
-    else 
-        mainmenu
+
+    #prompt.say("This is where you'll be fighting")
+    if $user.weeks_trained == 3 || $user.weeks_trained == 6 || $user.weeks_trained == 9 || $user.weeks_trained == 12
+        input11 = prompt.select("#{$user.trainer_name}: Hey sport, looks like your training has paid off and your ready for the octagon. Are you ready to head out?", ["Go To Fight", "Back"])
+        if input11 == "Go To Fight"
+            flight1
+        else 
+            mainmenu
+        end
+    else
+        prompt.say("#{$user.trainer_name}: Woah, you haven't finished your training yet! Your fight doesn't start for another X weeks.")
+        prompt.say("Why don't you head on over to 'Train' in the main menu and take of what needs to be done.")
+        sleep(2.0)
+        input10 = prompt.select("Ready to go back?", ["Back"])
+        if input10 == "Back"
+            mainmenu
+        end
     end
 end
 
@@ -389,22 +404,99 @@ def gotrain
     puts `clear`
     prompt = TTY::Prompt.new
     if $user.weeks_trained == 0 && $user.level == 1
-        prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up. I've made an easy workout routine you can follow to get you prepared for Chuck Cianwood.")
+        prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up.")
+        prompt.say("#{$user.trainer_name}: I've made an easy workout routine you can follow to get you prepared for Chuck Cianwood.")
         sleep(4.0)
         array_of_level_1_workouts = []
         Workout.all.each do |workout|
             if workout.level == 1
-                array_of_level_1_workouts.push(workout.str_workouts)
-                array_of_level_1_workouts.push(workout.flex_workouts)
-                array_of_level_1_workouts.push(workout.end_workouts)
+                array_of_level_1_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
             end
         end
-        puts "#{$user.trainer_name}: Here are your workouts for the next three weeks #{array_of_level_1_workouts}"
-        puts
+        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_1_workouts}.")
         sleep(2.0)
-        goback = prompt.select("Ready to go back?", ["Back"])
+        goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
+    elsif $user.weeks_trained == 3 && $user.level == 2
+        prompt.say("#{$user.trainer_name}: Congrats on your first big win! Chuck never had a chance. Ha ha ha!")
+        sleep(2.0)
+        array_of_level_2_workouts = []
+        Workout.all.each do |workout|
+            if workout.level == 2
+                array_of_level_2_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
+            end
+        end
+        prompt.say("#{$user.trainer_name}: I went ahead and changed your workout schedule to prepare you for Brawly. I'll tell you more about him closer to the fight.")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_2_workouts}")
+        sleep(2.0)
+        goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
+    elsif $user.weeks_trained == 6 && $user.level == 3
+        prompt.say("#{$user.trainer_name}: Hot damn, that's two wins in a row! You're making a name for yourself out there.")
+        prompt.say("#{$user.trainer_name}: Some people are calling you the next Ultimate Fighter! Don't let it get to your head, you still have a long way to go.")
+        sleep(2.0)
+        array_of_level_3_workouts = []
+        Workout.all.each do |workout|
+            if workout.level == 3
+                array_of_level_3_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
+            end
+        end
+        prompt.say("#{$user.trainer_name}: Your next opponent is Maylene. She's got speed and power in her kicks... unlike you! Ha ha ha!")
+        sleep(1.0)
+        prompt.say("#{$user.username}: .....")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: Jeez I'm kidding!")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_3_workouts}")
+        sleep(2.0)
+        goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
+    elsif $user.weeks_trained == 9 && $user.level == 4
+        prompt.say("#{$user.trainer_name}: Congragulations on you're third win! I'm beginning to think you have a shot at the title, but you need at least 4 wins to challenge the champion.")
+        prompt.say("#{$user.trainer_name}: You'll need to dedicate a lot more time to training from now on. Your next opponent, Korrina, is an animal in the cage.")
+        array_of_level_4_workouts = []
+        Workout.all.each do |workout|
+            if workout.level == 4
+                array_of_level_4_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
+            end
+        end
+        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_4_workouts}.")
+        goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
+    elsif $user.weeks_trained == 12 && $user.level == 5
+        prompt.say("#{$user.trainer_name}: Holy shit you fucking madman. The absolute madman! I always knew you had it in you, ever since your first fight with Chuck.")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: But this is it.")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: No more games...")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: No more cheap tricks..")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: You're fighting the reigning Ultimate Fighter: Mike Tyson. He's the toughest motherfucker to walk into that octagon.")
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: .......")
+        array_of_level_5_workouts = []
+        Workout.all.each do |workout|
+            if workout.level == 5
+                array_of_level_5_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
+            end
+        end
+        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_5_workouts}.")
+        goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
+    else
+        "error"
     end
+
     if goback == "Back"
+        mainmenu
+    else
+        progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
+        100.times {progressbar.increment; sleep(0.005)}
+        sleep(1.0)
+        prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha!")
+        if $user.level == 1
+            $user.weeks_trained += 3
+        else
+            $user.weeks_trained += 2
+        end
+        sleep(1.0)
         mainmenu
     end
 end
@@ -604,6 +696,7 @@ def makemove
         end
     end
     if $opponent_health <= 0
+        $opponent_health = 0
         userwins
     else
         opponent_attack = $opponent_move_choices.sample
@@ -614,6 +707,7 @@ def makemove
         end
     end 
     if $health <= 0
+        $health = 0
         userloses
     else 
         makemove
@@ -628,6 +722,7 @@ def userwins
     sleep(1.5) 
     prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
     $user.money += ($health * 100)
+    $user.weeks_trained += 1
     $health = 100
     afterwin
 end
@@ -637,7 +732,20 @@ def userloses
     prompt = TTY::Prompt.new
     $user.money += ($health * 100)
     high_score = $user.money
-    #add high_score to high score table and see if it's the highest score ever
+    prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score}")
+    sleep(1.0)
+    Highscore.all.each do |highscore|
+        if highscore.username == $user.username && high_score > highscore.highscore
+            highscore.date = DateTime.now
+            highscore.highscore = high_score
+        else
+            highscore.username = $user.username
+            highscore.date = DateTime.now
+            highscore.highscore = high_score
+        end
+    end
+    #prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score}")
+
     exit
 end
 
@@ -661,8 +769,6 @@ def afterwin
         end
     end
 end
-
-#
 
 
 intro

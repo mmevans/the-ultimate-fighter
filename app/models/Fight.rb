@@ -1,4 +1,4 @@
 class Fight < ActiveRecord::Base
-    has_many :moves
-    has_one :user, through: :fights
+    belongs_to :user
+    belongs_to :opponent
 end

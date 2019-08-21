@@ -30,8 +30,6 @@ $array_recent_power_moves = []
 $array_recent_strength_moves = []
 $array_available_moves = []
 
-
-
 def intro
     prompt = TTY::Prompt.new
     prompt.say("The Ultimate Fighter")
@@ -209,7 +207,7 @@ def gotofight
 
     #prompt.say("This is where you'll be fighting")
     if $user.weeks_trained == 3 || $user.weeks_trained == 6 || $user.weeks_trained == 9 || $user.weeks_trained == 12
-        input11 = prompt.select("#{$user.trainer_name}: Hey sport, looks like your training has paid off and your ready for the octagon. Are you ready to head out?", ["Go To Fight", "Back"])
+        input11 = prompt.select("#{$user.trainer_name}: Hey sport, looks like your training has paid off and your ready for the octagon! Quick, go catch your flight!", ["Go To Fight", "Back"])
         if input11 == "Go To Fight"
             flight1
         else 
@@ -221,7 +219,7 @@ def gotofight
             sleep(0.3)
           end
         puts ""
-        prompt.say("#{$user.trainer_name}: Woah, you haven't finished your training yet! Your fight doesn't start for another X weeks. 'Enter'")
+        prompt.say("#{$user.trainer_name}: Woah, you haven't finished your training yet! Your fight doesn't start for another 3 weeks. 'Enter'")
         gets
         prompt.say("#{$user.trainer_name}: Why don't you head on over to 'Train' in the main menu and take of what needs to be done. 'Enter'")
         gets
@@ -229,13 +227,6 @@ def gotofight
         if input10 == "Back"
             mainmenu
         end
-    end
-end
-
-def wait
-    3.times do
-        print "."
-        sleep(0.3)
     end
 end
 
@@ -251,10 +242,11 @@ def flight1
     sleep(0.5)
     print "."
     sleep(0.5)
+    puts "\n'Enter'"
     gets
-    prompt.say("The Los Angeles Airport")
-    sleep(2)
-    flight1 = prompt.select("What do you want to do?", ["Go Inside", "Go Back Home"])
+    prompt.say("The Los Angeles Airport 'Enter'")
+    gets
+    flight1 = prompt.select("Select:", ["Go Inside", "Go Back Home"])
     if flight1 == "Go Inside"
         flight2
     else
@@ -265,9 +257,17 @@ end
 def flight2
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("Inside...")
-    prompt.say("Lady at desk: Hello there! Can I help you?")
-    flight2 = prompt.select("Make a choice", ["Yes, I need to buy a ticket", "Na, I'm fine...thanks"])
+    print "Inside"
+    print "."
+    sleep(0.5)
+    print "."
+    sleep(0.5)
+    print "."
+    sleep(0.5)
+    puts "\n'Enter'"
+    gets
+    prompt.say("Baggage Handlers: Good morning! How can I help you?")
+    flight2 = prompt.select("Select:", ["Yes, I need to buy a ticket!", "Nah, I'm fine...thanks."])
     if flight2 == "Yes, I need to buy a ticket"
         ## big if statement that tells user where to buy ticket to
         flight3
@@ -279,8 +279,9 @@ end
 def flight3
     puts `clear`
     prompt = TTY::Prompt.new
-
-    prompt.say("Okay, please select a location.")
+    sleep(1.0)
+    prompt.say("Okay, please select a location. 'Enter'")
+    gets
     flight3 = prompt.select("Scroll down to see more options.", ["Miami", "New York", "Houston", "San Antonio", "Seattle", "Denver", "Nashville" ])
     if flight3 == "Miami"
         $flightcity = "Miami"
@@ -295,7 +296,7 @@ def flight3
     end
     flightweather
 end
-
+##################
 def flightweather
     puts `clear`
     prompt = TTY::Prompt.new
@@ -314,24 +315,27 @@ def flightweather
         buyticket
     end
 end
-
+#################
 def buyticketlevel1
     puts `clear`
     prompt = TTY::Prompt.new
-    time = prompt.select("What time would you like to go at?", ["8:30AM", "11:45AM", "3:15PM"])
+    sleep(1.0)
     payment = prompt.select("Great! And how would you like to pay for that?", ["Cash", "Card", "Frequent Flyer Miles"])
     if payment == "Cash"
-        prompt.say("Oh no! I'm afriad that's not enough")
+        prompt.say("Oh no! I'm afriad that's not enough. 'Enter'")
+        gets
         flighthelp
     elsif payment == "Card"
-        prompt.say("Oh no! I'm afraid your card was denied")
+        prompt.say("Oh no! I'm afraid your card was denied. 'Enter'")
+        gets
         flighthelp
     else
-        prompt.say("Oh, no! It looks like you don't have any")
+        prompt.say("Oh, no! It looks like you don't have any. 'Enter'")
+        gets
         flighthelp
     end
 end
-
+###################
 def flighthelp
     puts `clear`
     prompt = TTY::Prompt.new
@@ -345,6 +349,7 @@ def flighthelp
     end
 end
 
+################
 def callmom
     puts `clear`
     prompt = TTY::Prompt.new
@@ -450,7 +455,7 @@ def gotrain
                 array_of_level_1_workouts.push(workout.str_workouts, workout.flex_workouts, workout.end_workouts)
             end
         end
-        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_1_workouts}.")
+        prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_1_workouts}")
         sleep(1.5)
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 3 && $user.level == 2
@@ -532,6 +537,7 @@ def gotrain
             progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
             100.times {progressbar.increment; sleep(0.005)}
             sleep(0.5)
+            puts `clear`
             prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter''")
             $user.weeks_trained += 3
             gets
@@ -539,7 +545,8 @@ def gotrain
         elsif $user.level == 2 && $user.weeks_trained == 3
             progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
             100.times {progressbar.increment; sleep(0.005)}
-            gets
+            sleep(0.5)
+            puts `clear`
             prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
             $user.weeks_trained += 3
             gets
@@ -547,7 +554,8 @@ def gotrain
         elsif $user.level == 3 && $user.weeks_trained == 6
             progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
             100.times {progressbar.increment; sleep(0.005)}
-            gets
+            sleep(0.5)
+            puts `clear`
             prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
             $user.weeks_trained += 3
             gets
@@ -555,7 +563,8 @@ def gotrain
         elsif $user.level == 4 && $user.weeks_trained == 9
             progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
             100.times {progressbar.increment; sleep(0.005)}
-            gets
+            sleep(0.5)
+            puts `clear`
             prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
             $user.weeks_trained += 3
             gets
@@ -563,7 +572,8 @@ def gotrain
         elsif $user.level == 5 && $user.weeks_trained == 12
             progressbar = ProgressBar.create(:title => "Simulate Training Weeks", :starting_at => 0, :total => 100, :progress_mark => "█")
             100.times {progressbar.increment; sleep(0.005)}
-            gets
+            sleep(0.5)
+            puts `clear`
             prompt.say("#{$user.trainer_name}: You're all set! Wow three weeks just flew by, ha ha ha ha! 'Enter'")
             $user.weeks_trained += 3
             gets
@@ -748,15 +758,15 @@ def choosemoves
     end
 
     choices = array_all_moves
-    prompt.say("Use 'Spacebar' to select your moves and 'Enter' when you are done!")
-    sleep(2.0)
+    prompt.say("Use 'Spacebar' to select your moves and 'Enter' when you are done! 'Enter'")
+    gets
     $array_user_moves_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
     if $array_user_moves_choices.count == 4
         prompt.say("#{$user.trainer_name}: QUOTE FROM TRAINER CLASS")
         globalvariablesforfight
     else
-        prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries!")
-        sleep(2.0)
+        prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries! 'Enter'")
+        gets
         choosemoves
     end
 end
@@ -792,7 +802,7 @@ def makemove
     else
         prompt.error("#{$user.trainer_name}: Your health is at #{$health}")
     end
-    sleep(1.5)
+    sleep(1.0)
     if $opponent_health >= $opponent_full_health * 0.75
         prompt.ok("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     elsif $opponent_health >= $opponent_full_health * 0.45
@@ -800,7 +810,7 @@ def makemove
     else
         prompt.error("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     end    
-    sleep(2.0)
+    sleep(1.0)
     $array_recent_power_moves = [$array_uppercut, $array_highjumpkick, $array_kneeofjustice, $array_uchimata, $array_skullcrusher].reduce([], :concat)
     $array_recent_strength_moves = [$array_jab, $array_righthook, $array_focuspunch, $array_hammerfist, $array_rearnakedchoke].reduce([], :concat)
 
@@ -877,10 +887,10 @@ def userwins
     prompt = TTY::Prompt.new
     $user.level += 1
     prompt.say("#{$user.trainer_name}: You knocked em out cold! What a fight...")
-    sleep(1.5) 
+    sleep(1.0) 
     prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")
+    sleep(1.0)
     $user.money += ($health * 100)
-    $user.weeks_trained += 1
     $health = 100
     afterwin
 end

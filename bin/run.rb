@@ -16,6 +16,22 @@ $opponent_move_choices = []
 $flightcity = nil 
 $frequentflyermiles = 0
 
+$array_uppercut = []
+$array_highjumpkick = []
+$array_kneeofjustice = []
+$array_uchimata = []
+$array_skullcrusher = []
+$array_jab = []
+$array_righthook = []
+$array_focuspunch = []
+$array_hammerfist = []
+$array_rearnakedchoke = []
+$array_recent_power_moves = []
+$array_recent_strength_moves = []
+$array_available_moves = []
+
+
+
 def intro
     prompt = TTY::Prompt.new
     prompt.say("The Ultimate Fighter")
@@ -263,6 +279,7 @@ end
 def flight3
     puts `clear`
     prompt = TTY::Prompt.new
+
     prompt.say("Okay, please select a location.")
     flight3 = prompt.select("Scroll down to see more options.", ["Miami", "New York", "Houston", "San Antonio", "Seattle", "Denver", "Nashville" ])
     if flight3 == "Miami"
@@ -736,15 +753,35 @@ def choosemoves
     $array_user_moves_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
     if $array_user_moves_choices.count == 4
         prompt.say("#{$user.trainer_name}: QUOTE FROM TRAINER CLASS")
-        makemove
+        globalvariablesforfight
     else
         prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries!")
         sleep(2.0)
         choosemoves
     end
 end
+### start
+def globalvariablesforfight
+    $array_uppercut = ["Uppercut","Uppercut"]
+    $array_highjumpkick = ["High Jump Kick","High Jump Kick"]
+    $array_kneeofjustice = ["Knee of Justice","Knee of Justice"]
+    $array_uchimata = ["Uchi Mata","Uchi Mata"]
+    $array_skullcrusher = ["Skull Crusher","Skull Crusher"]
 
+    $array_jab = ["Jab"]
+    $array_righthook = ["Right Hook"]
+    $array_focuspunch = ["Focus Punch"]
+    $array_hammerfist = ["Hammerfist"]
+    $array_rearnakedchoke = ["Rear-Naked Choke"]
+    
+    # $array_recent_power_moves = [$array_uppercut, $array_highjumpkick, $array_kneeofjustice, $array_uchimata, $array_skullcrusher].reduce([], :concat)
+    # $array_recent_strength_moves = [$array_jab, $array_righthook, $array_focuspunch, $array_hammerfist, $array_rearnakedchoke].reduce([], :concat)
 
+     #$array_available_moves = []
+
+     makemove 
+end
+### end
 def makemove
     puts `clear`
     prompt = TTY::Prompt.new
@@ -763,8 +800,54 @@ def makemove
     else
         prompt.error("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     end    
-    sleep(1.5)
-    user_attack = prompt.select("Choose a move!", $array_user_moves_choices)
+    sleep(2.0)
+    $array_recent_power_moves = [$array_uppercut, $array_highjumpkick, $array_kneeofjustice, $array_uchimata, $array_skullcrusher].reduce([], :concat)
+    $array_recent_strength_moves = [$array_jab, $array_righthook, $array_focuspunch, $array_hammerfist, $array_rearnakedchoke].reduce([], :concat)
+
+    $array_available_moves = []
+    $array_user_moves_choices.each do |move|
+        if $array_recent_power_moves.include?(move) == false && $array_recent_strength_moves.include?(move) == false
+            $array_available_moves << move
+        end
+    end
+
+    user_attack = prompt.select("Choose a move!", $array_available_moves)
+    #below is new work
+    $array_uppercut.pop 
+    $array_highjumpkick.pop 
+    $array_kneeofjustice.pop 
+    $array_uchimata.pop
+    $array_skullcrusher.pop 
+
+    $array_jab.pop
+    $array_righthook.pop
+    $array_focuspunch.pop
+    $array_hammerfist.pop
+    $array_rearnakedchoke.pop
+
+    if user_attack == "Uppercut"
+        $array_uppercut << "Uppercut"
+    elsif user_attack == "High Jump Kick"
+        $array_highjumpkick << "High Jump Kick"
+    elsif user_attack == "Knee of Justice"
+        $array_kneeofjustice << "Knee of Justice"
+    elsif user_attack == "Uchi Mata"
+        $array_uchimata << "Uchi Mata"
+    elsif user_attack == "Skull Crusher"
+        $array_skullcrusher << "Skull Crusher"
+    elsif user_attack == "Jab"
+        $array_jab << "Jab"
+    elsif user_attack == "Right Hook"
+        $array_righthook << "Right Hook"
+    elsif user_attack == "Focus Punch"
+        $array_focuspunch << "Focus Punch"
+    elsif user_attack == "Hammerfist"
+        $array_hammerfist << "Hammerfist"
+    elsif user_attack == "Rear-Naked Choke"
+        $array_rearnakedchoke << "Rear-Naked Choke"
+    end
+
+    #above is new work
     Moveset.all.select do |m|
         if user_attack == m.moves
             $opponent_health -= m.damage

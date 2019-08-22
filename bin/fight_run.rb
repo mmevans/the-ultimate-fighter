@@ -22,8 +22,52 @@ end
 def opponentinfo
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}. 'Enter'")
-    prompt.say("#{$user.trainer_name}: Keep your gloves up and stay focused!")
+    if $current_opponent.name == "Chuck Cianwood"
+        prompt.say("#{$user.trainer_name}: This fight is going to be tough. Chuck eats newbies like you up over at his gym.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: If your not careful, he's got a mean uppercut that's going to knock your ass out.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Stay on your toes, and work on what we practiced.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Good luck! 'Enter'")
+        gets
+    elsif $current_opponent.name == "Brawly Dewford"
+        prompt.say("#{$user.trainer_name}: Brawly might seem tiny compared to the last guy, but he's twice as fast!")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: He punches at lightning speeds and is known KO move is his High Jump Kick ")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: If you can avoid that, then you should be good! ")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Good luck!")
+        gets
+    elsif $current_opponent.name == "Maylene Veilstone"
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Maylene is a fierce competitor. She studies her opponents extensively.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Since you've been making a name for yourself, expect your opponents from here on out to study your moveset and skills")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: My only advice is don't get hit with her knee. I've seen her fracture men's skulls without hesitation")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Good luck!")
+        gets
+    elsif $current_opponent.name == "Korrina Shalour"
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Your opponent's name is Korrina Shalour. She is also looking for a chance to fight the champion.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: My sources tell me she's paid off the ref so your chances are slim.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Don't let her get in your head. This is going to be a mental battle as much as it is a physical one.")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Good luck kid. I believe in you!")
+    elsif $current_opponent.name == "Mike Tyson"
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Alright champ, this is it. The baddest motherfucker to walk into the cage. Mike Tyson")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: This is all you kid. Now get out there!")
+        sleep(0.5)
+        prompt.say("#{$user.trainer_name}: Good luck.")
+        gets
+    end
     sleep(0.75)
     choosefight = prompt.select("Ready To Start", ["Back"])
     if choosefight == "Back"
@@ -245,9 +289,10 @@ def userloses
     prompt = TTY::Prompt.new
     $user.money += ($health * 100)
     high_score = $user.money
+    $current_opponent.fights_won += 1
     prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score} 'Enter'")
     gets
-    Highscore.all.each do |highscore|
+    Highscore.all.select do |highscore|
         if highscore.username == $user.username && high_score > highscore.highscore
             highscore.date = DateTime.now
             highscore.highscore = high_score
@@ -257,7 +302,6 @@ def userloses
             highscore.highscore = high_score
         end
     end
-    #prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score}")
 
     exit
 end

@@ -13,7 +13,7 @@ def gotrain
             end
         end
         prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_1_workouts}")
-        sleep(1.5)
+        sleep(0.8)
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 3 && $user.level == 2
         prompt.say("#{$user.trainer_name}: Congrats on your first big win! Chuck never had a chance. Ha ha ha! 'Enter'")
@@ -27,7 +27,7 @@ def gotrain
         prompt.say("#{$user.trainer_name}: I went ahead and changed your workout schedule to prepare you for Brawly. I'll tell you more about him closer to the fight. 'Enter'")
         gets
         prompt.say("#{$user.trainer_name}: Here are your workouts - #{array_of_level_2_workouts}")
-        sleep(0.8)
+        sleep(0.5)
         goback = prompt.select("Are you ready to start training?", ["Simulate Training", "Back"])
     elsif $user.weeks_trained == 6 && $user.level == 3
         prompt.say("#{$user.trainer_name}: Hot damn, that's two wins in a row! You're making a name for yourself out there. 'Enter'")

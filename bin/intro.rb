@@ -1,5 +1,6 @@
 def intro
     prompt = TTY::Prompt.new
+    print box
     prompt.say("The Ultimate Fighter")
     sleep(0.5)
     signuporsignin
@@ -175,12 +176,12 @@ end
 def help
     puts `clear`
     prompt = TTY::Prompt.new
-    choosehelp = prompt.select("CHOOSE AN OPTION:", ["How Does Schedule Work", "How Do Fights Work", "About The Creators", "Back"])
-    if choosehelp == "How does schedule work?"
-        schedulehelp
-    elsif choosehelp == "How do fights work?"
+    choosehelp = prompt.select("CHOOSE AN OPTION:", ["What Does Training Do?", "How Do Fights Work?", "About The Creators", "Back"])
+    if choosehelp == "What Does Training Do?"
+        traininghelp
+    elsif choosehelp == "How Do Fights Work?"
         fighthelp
-    elsif choosehelp == "About Us!"
+    elsif choosehelp == "About The Creators"
         about
     elsif choosehelp == "Back"
         mainmenu
@@ -188,19 +189,19 @@ def help
 end
 
 
-def schedulehelp
+def traininghelp
     puts `clear`
     prompt = TTY::Prompt.new
     sleep(0.5)
-    prompt.say("Schedule tells you what your daily schedule looks like. It doesn't have any effect on your fights. 'Enter'")
+    prompt.say("This simulates your training before every fight. Your trainer will give you a list of workouts to do. 'Enter'")
     gets
-    prompt.say("We definitley thought it might have some functionality regarding your moves/stats, but alas no 'Enter'")
+    prompt.say("We had an idea of someone integrating your stats/moves when you 'train', but alas no. 'Enter'")
     gets
     4.times do
         print "."
-        sleep(0.05)
+        sleep(0.5)
       end
-    prompt.say("I'm sad just thinking about what could have been 'Enter''")
+    prompt.say("\nI'm sad just thinking about what could have been 'Enter''")
     gets
     4.times do
         print "."

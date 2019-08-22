@@ -240,31 +240,31 @@ level_5_skullcrusher = Moveset.create({
 })
 
 workout_level_1 = Workout.create({
-    :str_workouts => "Knee Push-ups",
-    :flex_workouts => "Calf Stretch",
-    :end_workouts => "Elliptical",
+    :str_workouts => "Dumbbell Bench Press",
+    :flex_workouts => "Foot Work",
+    :end_workouts => "Abs",
     :level => 1
 })
 workout_level_2 = Workout.create({
     :str_workouts => "Push-ups",
     :flex_workouts => "Squats",
-    :end_workouts => "Cycling",
+    :end_workouts => "Leg Press",
     :level => 2
 })
 workout_level_3 = Workout.create({
     :str_workouts => "Bicep Curls",
     :flex_workouts => "Tricep Extensions",
-    :end_workouts => "Running",
+    :end_workouts => "Boxing",
     :level => 3
 })
 workout_level_4 = Workout.create({
     :str_workouts => "Bench Press",
     :flex_workouts => "Deadlifts",
-    :end_workouts => "Tabata",
+    :end_workouts => "Bicep Curl",
     :level => 4
 })
 workout_level_5 = Workout.create({
-    :str_workouts => "Weighted Pull-ups",
+    :str_workouts => "Pistol Squats",
     :flex_workouts => "Weighted Dips",
     :end_workouts => "Running Suicides",
     :level => 5

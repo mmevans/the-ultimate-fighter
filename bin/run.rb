@@ -20,6 +20,7 @@ $opponent_move_choices = []
 $flightcity = nil 
 $frequentflyermiles = 0
 
+
 intro
 mainmenu
 

@@ -166,14 +166,17 @@ def globalvariablesforfight
     $array_hammerfist = ["Hammerfist"]
     $array_rearnakedchoke = ["Rear-Naked Choke"]
     
-    # $array_recent_power_moves = [$array_uppercut, $array_highjumpkick, $array_kneeofjustice, $array_uchimata, $array_skullcrusher].reduce([], :concat)
-    # $array_recent_strength_moves = [$array_jab, $array_righthook, $array_focuspunch, $array_hammerfist, $array_rearnakedchoke].reduce([], :concat)
-
-     #$array_available_moves = []
-
-     makemove 
+    trainer_phrases_all = []
+    $fightphrases = []
+    Trainer.all.each do |trainer|
+    if trainer.name == "Red"
+        trainer_phrases_all << trainer.phrase3 && trainer_phrases_all << trainer.phrase8 && trainer_phrases_all << trainer.phrase9 
+    end
+    end
+    $fightphrases = trainer_phrases_all.uniq
+    makemove 
 end
-### end
+
 def makemove
     puts `clear`
     prompt = TTY::Prompt.new
@@ -208,7 +211,10 @@ def makemove
             $array_available_moves_opponent << move
         end
     end
-
+    if $fightphrases.last
+        prompt.say("#{$user.trainer_name}: #{$fightphrases.last}")
+        $fightphrases.pop
+    end
     user_attack = prompt.select("Choose a move!", $array_available_moves)
 
     #below is new work

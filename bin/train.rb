@@ -1,6 +1,6 @@
 def gotrain
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     if $user.weeks_trained == 0 && $user.level == 1
         prompt.say("#{$user.trainer_name}: Hey there champ! Looks like you've got your first big fight coming up. 'Enter'")
         gets

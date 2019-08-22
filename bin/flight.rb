@@ -1,6 +1,6 @@
 def gotofight
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
 
     #prompt.say("This is where you'll be fighting")
     if ($user.weeks_trained == 3 && $user.level == 1)|| ($user.weeks_trained == 6 && $user.level == 2) || ($user.weeks_trained == 9 && $user.level == 3) || ($user.weeks_trained == 12 && $user.level == 4) || ($user.weeks_trained == 15 && $user.level == 5)
@@ -25,7 +25,7 @@ end
 #below is flight
 def flight1
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     $flightcity = nil
     sleep(0.8)
     prompt.say("Location: The Los Angeles Airport")
@@ -40,7 +40,7 @@ end
 
 def flight2
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     sleep(0.8)
     prompt.say("Baggage Handler: Good morning! How can I help you?")
     flight2 = prompt.select("Select:", ["Yes, I need to buy a ticket!", "Nah, I'm fine...thanks."])
@@ -53,7 +53,7 @@ end
 
 def flight3
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Baggage Handler: Of course! Where will you be heading today?")
     if $user.level == 1
         prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Miami!")
@@ -83,7 +83,7 @@ end
 
 def flightweather
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     weather = ["good", "medium", "bad"]
     current_weather = weather.sample
     if current_weather == "good"
@@ -102,7 +102,7 @@ end
 #################
 def buyticketlevel1
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     sleep(1.0)
     payment = prompt.select("Great! And how would you like to pay for that?", ["Cash", "Card", "Frequent Flyer Miles"])
     if payment == "Cash"
@@ -122,7 +122,7 @@ end
 ###################
 def flighthelp
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     sleep(0.3)
     prompt.say("#{$user.trainer_name}: Shoot! This isn't good. 'Enter'")
     gets
@@ -138,7 +138,7 @@ end
 ################
 def callmom
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     sleep(0.75)
     print "."
     sleep(0.1)
@@ -185,21 +185,21 @@ end
 
 def checkmiles
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Frequent Flyer Miles: #{$frequentflyermiles}")
     sleep(1.5)
     asktime
 end
 
 def asktime
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     time = prompt.select("What time would you like to go at?", ["8:30AM", "11:45AM", "3:15PM"])
     buyticket
 end
 
 def buyticket
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     #time = prompt.select("What time would you like to go at?", ["8:30AM", "11:45AM", "3:15PM"])
     payment = prompt.select("Great! And how would you like to pay for that?", ["Cash", "Card", "Frequent Flyer Miles"])
     if payment == "Cash"
@@ -228,7 +228,7 @@ end
 
 def preptoboardplane
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     if $flightcity == nil
         prompt.say("#{$user.trainer_name}: Shoot, why didn't you buy a ticket! Now we'll miss the flight.")
         prompt.say("#{$user.trainer_name}: I'm sorry kid, but you'll have to forefit.")
@@ -256,7 +256,7 @@ end
 
 def boardplane
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Flight Attendant: Welcome Aboard!")
     progressbar = ProgressBar.create(:title => "Simulating Flight", :starting_at => 0, :total => 50, :progress_mark => "█")
     50.times {progressbar.increment; sleep(0.03)}

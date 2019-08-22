@@ -20,6 +20,8 @@ $array_user_moves_choices = []
 $opponent_move_choices = []
 $flightcity = nil 
 $frequentflyermiles = 0
+$user_miss = 1
+$opponentmiss = 1
 
 intro
 mainmenu

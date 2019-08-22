@@ -18,7 +18,7 @@ end
 
 def makeusername
     puts `clear`
-    prompt = TTY::Prompt.new(help_color: :cyan)
+    prompt = TTY::Prompt.new(active_color: :blue)
     array_of_usernames_signup = []
     emoji1 = prompt.decorate("👻 ")
     User.all.select do |user|
@@ -36,7 +36,7 @@ def makeusername
 end
 
 def makepassword
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     sex_filter = LanguageFilter::Filter.new matchlist: :profanity, replacement: :stars
     hate_filter = LanguageFilter::Filter.new matchlist: :hate, replacement: :stars
     emoji1 = prompt.decorate("👻 ")
@@ -51,7 +51,7 @@ end
 
 def selectgender_trainer_create
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     gender = prompt.select("Choose your gender", ["Male", "Female"])
     prompt = TTY::Prompt.new
     trainer = prompt.select("Choose your trainer.", ["Doc Louis", "Mickey Goldmill", "Red", "Lance"])
@@ -77,7 +77,7 @@ end
 
 def loginusername
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     username = nil
     array_of_usernames_login = []
     username = prompt.ask("What is your username?")
@@ -94,7 +94,7 @@ def loginusername
 end  
 
 def loginpassword
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     checkpassword = nil
     emoji1 = prompt.decorate("👻 ")
 
@@ -124,7 +124,7 @@ end
 
 def goodluck
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("You're all set. Good luck!")
     start_game = prompt.select("Are You Ready?", ["START GAME"])
     if start_game == "START GAME"
@@ -137,7 +137,7 @@ end
 
 def mainmenu 
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     input9 = prompt.select("Main Menu:", ["Stats", "Fight", "Train", "Help"])
     if input9 == "Stats"
         stats
@@ -152,7 +152,7 @@ end
 
 def stats
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Money: #{$user.money}")
     prompt.say("Energt: #{$user.energy}")
     prompt.say("Strength: #{$user.str}")
@@ -175,7 +175,7 @@ end
 
 def help
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     choosehelp = prompt.select("CHOOSE AN OPTION:", ["What Does Training Do?", "How Do Fights Work?", "About The Creators", "Back"])
     if choosehelp == "What Does Training Do?"
         traininghelp
@@ -191,7 +191,7 @@ end
 
 def traininghelp
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     sleep(0.5)
     prompt.say("This simulates your training before every fight. Your trainer will give you a list of workouts to do. 'Enter'")
     gets
@@ -217,7 +217,7 @@ end
 
 def fighthelp
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("It’s a turned-based combat system like pokemon! 'Enter'")
     gets
     prompt.say("Your moves (and your opponents) do X damage. 'Enter'")
@@ -232,7 +232,7 @@ end
 
 def about
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Created by Michael Evans and Barrette Banner")
     prompt.say("We are students at the Flatiron School of Houston.")
     prompt.say("We were inspired by games like Pokémon and Punchout and wanted to see if we could create our own twist in a CLI applicaiton.")

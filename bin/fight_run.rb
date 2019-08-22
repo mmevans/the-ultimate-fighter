@@ -1,8 +1,8 @@
+require 'pry'
 def realfightinfo
     puts `clear`
     $health *= $user.level
-    puts "#{$health} and #{$user.level}."
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     Opponent.all.select do |opponent|
         if $user.level == opponent.level
             $current_opponent = opponent
@@ -22,7 +22,7 @@ end
 
 def opponentinfo
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     if $current_opponent.name == "Chuck Cianwood"
         prompt.say("#{$user.trainer_name}: This fight is going to be tough. Chuck eats newbies like you up over at his gym.")
         sleep(1.3)
@@ -78,7 +78,7 @@ end
 
 def choosemoves
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :red)
     array_all_moves = []
     case $user.level
     when 1
@@ -180,7 +180,10 @@ end
 
 def makemove
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
+    if $usermiss == 0
+        prompt.say("#{$current_user} missed!")
+    end
     if $health >= $opponent_full_health * 0.75
         prompt.ok("#{$user.trainer_name}: Your health is at #{$health}")
     elsif $health >= $opponent_full_health * 0.45
@@ -189,6 +192,9 @@ def makemove
         prompt.error("#{$user.trainer_name}: Your health is at #{$health}")
     end
     sleep(1.0)
+    if $opponentmiss == 0
+        prompt.say("Your opponent missed!")
+    end
     if $opponent_health >= $opponent_full_health * 0.75
         prompt.ok("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
     elsif $opponent_health >= $opponent_full_health * 0.45
@@ -216,9 +222,8 @@ def makemove
         prompt.say("#{$user.trainer_name}: #{$fightphrases.last}")
         $fightphrases.pop
     end
+    #add stuff for if all power moves
     user_attack = prompt.select("Choose a move!", $array_available_moves)
-
-    #below is new work
     $array_uppercut.pop 
     $array_highjumpkick.pop 
     $array_kneeofjustice.pop 
@@ -252,21 +257,33 @@ def makemove
     elsif user_attack == "Rear-Naked Choke"
         $array_rearnakedchoke << "Rear-Naked Choke"
     end
+#here
 
-    #above is new work
+miss_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+$user_miss = 1
+$opponentmiss = 1
+
+if miss_array.sample > 16
+    $user_miss = 0
+end
+
+if miss_array.sample > 16
+    $opponentmiss = 0
+end
+#here
     Moveset.all.select do |m|
         if user_attack == m.moves
-            $opponent_health -= m.damage
+            $opponent_health -= (m.damage * $user_miss)
         end
     end
     if $opponent_health <= 0
         $opponent_health = 0
         userwins
     else
-        opponent_attack = $array_available_moves_opponent.sample ##here
+        opponent_attack = $array_available_moves_opponent.sample 
         Moveset.all.select do |m|
             if opponent_attack == m.moves
-                $health -= m.damage
+                $health -= (m.damage * $opponentmiss)
             end
         end
     end 
@@ -280,7 +297,7 @@ end
 
 def userwins
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     $user.level += 1
     prompt.say("#{$user.trainer_name}: You knocked em out cold! What a fight...")
     sleep(1.0) 
@@ -293,7 +310,7 @@ end
 
 def userloses
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :red)
     $user.money += ($health * 100)
     high_score = $user.money
     prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score} 'Enter'")
@@ -308,7 +325,7 @@ end
 
 def afterwin
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :red)
     if $user.level == 6
         prompt.say("#{$user.trainer_name}: Congrats you've won the game!")
         sleep(2.0)

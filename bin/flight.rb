@@ -28,13 +28,13 @@ def flight1
     prompt = TTY::Prompt.new(active_color: :blue)
     $flightcity = nil
     sleep(0.8)
-    prompt.say("The Los Angeles Airport")
+    prompt.say("Location: The Los Angeles Airport")
     sleep(0.5)
     flight1 = prompt.select("Select:", ["Head Inside", "Give Up On Your Dreams"])
     if flight1 == "Head Inside"
         flight2
     else
-        mainmenu
+        userloses
     end
 end
 
@@ -56,15 +56,15 @@ def flight3
     prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Baggage Handler: Of course! Where will you be heading today?")
     if $user.level == 1
-        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Miami")
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Miami!")
     elsif $user.level == 2
-        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to San Antonio")
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to San Antonio!")
     elsif $user.level == 3
-        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Seattle")
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Seattle!")
     elsif $user.level == 4
-        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Houston")
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Houston!")
     elsif $user.level == 5
-        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to New York")
+        prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to New York!")
     end
     flight4 = prompt.select("Scroll down to see more options.", ["Miami", "New York", "Houston", "San Antonio", "Seattle", "Denver", "Nashville" ])
     if flight4 == "Miami"
@@ -80,7 +80,7 @@ def flight3
     end
     flightweather
 end
-##################
+
 def flightweather
     puts `clear`
     prompt = TTY::Prompt.new(active_color: :blue)
@@ -129,7 +129,7 @@ def flighthelp
     help1 = prompt.select("#{$user.trainer_name}: Is there any other way to pay for this flight?", ["Give Up", "Call Mom"])
     if help1 == "Give Up"
         prompt.say("#{$user.trainer_name}: Guess this is the end of our journey kid.")
-        exit
+        userloses
     else
         callmom
     end
@@ -160,7 +160,7 @@ def callmom
     sleep(0.1)
     print "."
     sleep(0.1)
-    print "Ring"
+    print "Ring\n"
     sleep(0.8)
     help2 = prompt.select("Hey kiddo! How's my little fighter doing?", ["I Need Some Help", "Sorry I butt dialed you. Talk to you later"])
     if help2 == "Sorry I butt dialed you. Talk to you later"

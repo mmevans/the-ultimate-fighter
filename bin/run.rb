@@ -1,11 +1,13 @@
 require_relative "../config/environment"
-require "tty-prompt"
-require 'pry'
-require 'ruby-progressbar'
 require_relative "./flight.rb"
 require_relative "./train.rb"
 require_relative "./fight_run.rb"
 require_relative "./intro.rb"
+require "tty-prompt"
+require 'pry'
+require 'ruby-progressbar'
+require 'tty-box'
+
 
 $current_user = nil
 $user = nil
@@ -20,7 +22,6 @@ $flightcity = nil
 $frequentflyermiles = 0
 $user_miss = 1
 $opponentmiss = 1
-
 
 intro
 mainmenu

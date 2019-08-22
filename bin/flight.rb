@@ -11,11 +11,6 @@ def gotofight
             mainmenu
         end
     else
-        5.times do
-            print "."
-            sleep(0.3)
-          end
-        puts ""
         prompt.say("#{$user.trainer_name}: Woah, you haven't finished your training yet! Your fight doesn't start for another 3 weeks. 'Enter'")
         gets
         prompt.say("#{$user.trainer_name}: Why don't you head on over to 'Train' in the main menu and take of what needs to be done. 'Enter'")
@@ -32,19 +27,11 @@ def flight1
     puts `clear`
     prompt = TTY::Prompt.new
     $flightcity = nil
-    print "Later that day"
-    print "."
+    sleep(0.8)
+    prompt.say("The Los Angeles Airport")
     sleep(0.5)
-    print "."
-    sleep(0.5)
-    print "."
-    sleep(0.5)
-    puts "\n'Enter'"
-    gets
-    prompt.say("The Los Angeles Airport 'Enter'")
-    gets
-    flight1 = prompt.select("Select:", ["Go Inside", "Go Back Home"])
-    if flight1 == "Go Inside"
+    flight1 = prompt.select("Select:", ["Head Inside", "Give Up On Your Dreams"])
+    if flight1 == "Head Inside"
         flight2
     else
         mainmenu
@@ -54,29 +41,20 @@ end
 def flight2
     puts `clear`
     prompt = TTY::Prompt.new
-    print "Inside"
-    print "."
-    sleep(0.5)
-    print "."
-    sleep(0.5)
-    print "."
-    sleep(0.5)
-    puts "\n'Enter'"
-    gets
-    prompt.say("Baggage Handlers: Good morning! How can I help you?")
+    sleep(0.8)
+    prompt.say("Baggage Handler: Good morning! How can I help you?")
     flight2 = prompt.select("Select:", ["Yes, I need to buy a ticket!", "Nah, I'm fine...thanks."])
     if flight2 == "Yes, I need to buy a ticket!"
-        ## big if statement that tells user where to buy ticket to
         flight3
     else 
-        preptoboardplane #i think
+        preptoboardplane
     end
 end
 
 def flight3
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("Okay, please select a location.")
+    prompt.say("Baggage Handler: Of course! Where will you be heading today?")
     if $user.level == 1
         prompt.say("#{$user.trainer_name}: Make sure to buy a ticket going to Miami")
     elsif $user.level == 2
@@ -128,15 +106,15 @@ def buyticketlevel1
     sleep(1.0)
     payment = prompt.select("Great! And how would you like to pay for that?", ["Cash", "Card", "Frequent Flyer Miles"])
     if payment == "Cash"
-        prompt.say("Oh no! I'm afriad that's not enough. 'Enter'")
+        prompt.say("I'm sorry, but you are $798 short. We do accept card! 'Enter'")
         gets
         flighthelp
     elsif payment == "Card"
-        prompt.say("Oh no! I'm afraid your card was denied. 'Enter'")
+        prompt.say("Sir, this is a Dave & Buster's Power Card. 'Enter'")
         gets
         flighthelp
     else
-        prompt.say("Oh, no! It looks like you don't have any. 'Enter'")
+        prompt.say("#{$user.username}: Damn, I don't have any points... 'Enter'")
         gets
         flighthelp
     end
@@ -145,7 +123,9 @@ end
 def flighthelp
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("#{$user.trainer_name}: Shoot! This isn't good.")
+    sleep(0.3)
+    prompt.say("#{$user.trainer_name}: Shoot! This isn't good. 'Enter'")
+    gets
     help1 = prompt.select("#{$user.trainer_name}: Is there any other way to pay for this flight?", ["Give Up", "Call Mom"])
     if help1 == "Give Up"
         prompt.say("#{$user.trainer_name}: Guess this is the end of our journey kid.")
@@ -159,15 +139,42 @@ end
 def callmom
     puts `clear`
     prompt = TTY::Prompt.new
-    prompt.say("Ring...Ring...Ring...")
+    sleep(0.75)
+    print "."
+    sleep(0.1)
+    print "."
+    sleep(0.1)
+    print "."
+    sleep(0.1)
+    print "Ring"
+    print "."
+    sleep(0.1)
+    print "."
+    sleep(0.1)
+    print "."
+    sleep(0.1)
+    print "Ring"
+    print "."
+    sleep(0.1)
+    print "."
+    sleep(0.1)
+    print "."
+    sleep(0.1)
+    print "Ring"
+    sleep(0.8)
     help2 = prompt.select("Hey kiddo! How's my little fighter doing?", ["I Need Some Help", "Sorry I butt dialed you. Talk to you later"])
     if help2 == "Sorry I butt dialed you. Talk to you later"
+        sleep(1.0)
         prompt.say("#{$user.trainer_name}: Guess this is the end of our journey kid.")
+        userloses
     else
         puts `clear`
-        prompt.say("Mom: Sure think! Anything for you. Let me add some of my frequent flyer miles to your account.")
+        prompt.say("Mom: Sure thing! Anything for you. Let me add some of my frequent flyer miles to your account. 'Enter'")
+        gets
         $frequentflyermiles += 30000
-        help3 = prompt.select("Mom: You're all set. If you want you can check that they're there.", ["Check Frequent Flyer Miles", "Go Buy Ticket"])
+        help3 = prompt.select("Mom: You're all set! Good luck! I love you <3", ["Check Frequent Flyer Miles", "Go Buy Ticket"])
+        prompt.say("#{$user.username}: I love you too!")
+        sleep(0.5)
         if help3 == "Check Frequent Flyer Miles"
             checkmiles
         else 
@@ -200,7 +207,8 @@ def buyticket
             prompt.say("Great!")
             preptoboardplane
         else
-            prompt.say("Sorry, I'm afraid that's not enough. Try again.") 
+            prompt.say("I'm sorry but you're about $798 short. We do accept credit cards!") 
+            gets
             buyticket 
         end
     elsif payment == "Card"
@@ -208,7 +216,8 @@ def buyticket
             prompt.say("Great!")
             preptoboardplane
         else
-            prompt.say("Sorry, I'm afraid that's not enough. Try again.") 
+            prompt.say("Sir, this is a Dave & Buster's Power Card. 'Enter''")
+            gets 
             buyticket 
         end
     elsif payment == "Frequent Flyer Miles"
@@ -223,7 +232,7 @@ def preptoboardplane
     if $flightcity == nil
         prompt.say("#{$user.trainer_name}: Shoot, why didn't you buy a ticket! Now we'll miss the flight.")
         prompt.say("#{$user.trainer_name}: I'm sorry kid, but you'll have to forefit.")
-        exit
+        userloses
     else
         if $user.level == 1 && $flightcity == "Miami"
             boardplane 
@@ -237,8 +246,10 @@ def preptoboardplane
             boardplane
         else
             prompt.say("#{$user.trainer_name}: Shoot, you bought a ticket to the wrong city! Now we'll miss the fight.")
-        prompt.say("#{$user.trainer_name}: I'm sorry kid, but you'll have to forefit.")
-        exit
+            sleep(0.5)
+            prompt.say("#{$user.trainer_name}: I'm sorry kid, but you'll have to forefit. 'Enter'")
+            gets
+            userloses
         end
     end
 end
@@ -247,7 +258,13 @@ def boardplane
     puts `clear`
     prompt = TTY::Prompt.new
     prompt.say("Flight Attendant: Welcome Aboard!")
-    #some sort of entertaining wait
+    progressbar = ProgressBar.create(:title => "Simulating Flight", :starting_at => 0, :total => 50, :progress_mark => "█")
+    50.times {progressbar.increment; sleep(0.03)}
     prompt.say("Welcome to #{$flightcity}")
-    realfightinfo
+    arena_prompt = prompt.select("Select:", ["Head To Arena", "Head Back Home"])
+    if arena_prompt == "Head To Arena"
+        realfightinfo
+    else
+        userloses
+    end
 end

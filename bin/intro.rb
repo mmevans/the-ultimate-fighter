@@ -6,7 +6,7 @@ def intro
 end 
 
 def signuporsignin
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(active_color: :blue)
     input1 = prompt.select("Select:", ["Sign Up", "Login"])
     if input1 == "Sign Up"
         makeusername
@@ -17,7 +17,7 @@ end
 
 def makeusername
     puts `clear`
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new(help_color: :cyan)
     array_of_usernames_signup = []
     emoji1 = prompt.decorate("👻 ")
     User.all.select do |user|
@@ -28,8 +28,8 @@ def makeusername
         sleep(0.5)
         makepassword
     else
-        prompt.say("Sorry, that username is already taken. Please try another! 'Enter'")
-        sleep(0.5)
+        prompt.say("Sorry, that username is already taken. Please try another!")
+        gets
         makeusername
     end
 end

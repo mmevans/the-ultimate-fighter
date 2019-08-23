@@ -8,8 +8,9 @@ def realfightinfo
             $current_opponent = opponent
         end
     end
-    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}. 'Enter'")
+    prompt.say("#{$user.trainer_name}: Your opponent is #{$current_opponent.name}.")
     $opponent_health = $current_opponent.energy
+    prompt.ok(">> Enter")
     gets
     choosefight = prompt.select("Select:", ["Opponent Info","Start Fight"])
     $opponent_full_health = $opponent_health
@@ -30,7 +31,8 @@ def opponentinfo
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Stay on your toes, and work on what we practiced.")
         sleep(1.3)
-        prompt.say("#{$user.trainer_name}: Good luck! 'Enter'")
+        prompt.say("#{$user.trainer_name}: Good luck!")
+        prompt.ok(">> Enter")
         gets
     elsif $current_opponent.name == "Brawly Dewford"
         prompt.say("#{$user.trainer_name}: Brawly might seem tiny compared to the last guy, but he's twice as fast!")
@@ -40,6 +42,7 @@ def opponentinfo
         prompt.say("#{$user.trainer_name}: If you can avoid that, then you should be good! ")
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Good luck!")
+        prompt.ok(">> Enter")
         gets
     elsif $current_opponent.name == "Maylene Veilstone"
         sleep(1.3)
@@ -50,6 +53,7 @@ def opponentinfo
         prompt.say("#{$user.trainer_name}: My only advice is don't get hit with her knee. I've seen her fracture men's skulls without hesitation")
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Good luck!")
+        prompt.ok(">> Enter")
         gets
     elsif $current_opponent.name == "Korrina Shalour"
         sleep(1.3)
@@ -60,6 +64,8 @@ def opponentinfo
         prompt.say("#{$user.trainer_name}: Don't let her get in your head. This is going to be a mental battle as much as it is a physical one.")
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Good luck kid. I believe in you!")
+        prompt.ok(">> Enter")
+        gets
     elsif $current_opponent.name == "Mike Tyson"
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Alright champ, this is it. The baddest motherfucker to walk into the cage. Mike Tyson")
@@ -67,6 +73,7 @@ def opponentinfo
         prompt.say("#{$user.trainer_name}: This is all you kid. Now get out there!")
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Good luck.")
+        prompt.ok(">> Enter")
         gets
     end
     sleep(0.75)
@@ -141,14 +148,16 @@ def choosemoves
     end
 
     choices = array_all_moves
-    prompt.say("Use 'Spacebar' to select your moves and 'Enter' when you are done! 'Enter'")
+    prompt.say("Use 'Spacebar' to select your moves and 'Enter' when you are done!")
+    prompt.ok(">> Enter")
     gets
     $array_user_moves_choices = prompt.multi_select("Select 4 moves", choices, max: 4)
     if $array_user_moves_choices.count == 4
         prompt.say("#{$user.trainer_name}: QUOTE FROM TRAINER CLASS")
         globalvariablesforfight
     else
-        prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries! 'Enter'")
+        prompt.say("oops! looks like you hit 'Enter' before selecting all your moves. No worries!")
+        prompt.ok(">> Enter")
         gets
         choosemoves
     end
@@ -181,7 +190,7 @@ end
 def makemove
     puts `clear`
     prompt = TTY::Prompt.new(active_color: :blue)
-    if $usermiss == 0
+    if $user_miss == 0
         prompt.say("#{$current_user} missed!")
     end
     if $health >= $opponent_full_health * 0.75
@@ -263,11 +272,11 @@ miss_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 $user_miss = 1
 $opponentmiss = 1
 
-if miss_array.sample > 16
+if miss_array.sample > 18
     $user_miss = 0
 end
 
-if miss_array.sample > 16
+if miss_array.sample > 12
     $opponentmiss = 0
 end
 #here
@@ -313,7 +322,8 @@ def userloses
     prompt = TTY::Prompt.new(active_color: :red)
     $user.money += ($health * 100)
     high_score = $user.money
-    prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score} 'Enter'")
+    prompt.say("You lost :( Better luck next time! Here is your highscore: #{high_score}")
+    prompt.ok(">> Enter")
     gets
     new_highscore = Highscore.create({
         :username => $user.username,

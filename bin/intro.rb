@@ -43,6 +43,8 @@ def makepassword
     $password = prompt.mask("Make a password", mask: emoji1)
     if sex_filter.match?($password) || hate_filter.match?($password)
         prompt.say("Please input another password.")
+        prompt.ok(">> Enter")
+        gets
         makepassword
     else
         selectgender_trainer_create
@@ -86,6 +88,8 @@ def loginusername
     end
     if array_of_usernames_login.include?(username) == false
         prompt.say("Sorry that username doesn't exist.")
+        prompt.ok(">> Enter")
+        gets
         signuporsignin
     else 
         $current_user = username
@@ -109,6 +113,8 @@ def loginpassword
     else
         $current_user = nil
         prompt.say("Sorry, you've entered the wrong password")
+        prompt.ok(">> Enter")
+        gets
         signuporsignin
     end
 end 
@@ -195,15 +201,18 @@ def traininghelp
     puts `clear`
     prompt = TTY::Prompt.new(active_color: :blue)
     sleep(0.5)
-    prompt.say("This simulates your training before every fight. Your trainer will give you a list of workouts to do. 'Enter'")
+    prompt.say("This simulates your training before every fight. Your trainer will give you a list of workouts to do.")
+    prompt.ok(">> Enter")
     gets
-    prompt.say("We had an idea of someone integrating your stats/moves when you 'train', but alas no. 'Enter'")
+    prompt.say("We had an idea of someone integrating your stats/moves when you 'train', but alas no.")
+    prompt.ok(">> Enter")
     gets
     4.times do
         print "."
         sleep(0.5)
       end
-    prompt.say("\nI'm sad just thinking about what could have been 'Enter''")
+    prompt.say("\nI'm sad just thinking about what could have been")
+    prompt.ok(">> Enter")
     gets
     choosehelp = prompt.select("Ready to go back?", ["Back"])
     if choosehelp == "Back"
@@ -214,11 +223,14 @@ end
 def fighthelp
     puts `clear`
     prompt = TTY::Prompt.new(active_color: :blue)
-    prompt.say("It’s a turned-based combat system like pokemon! 'Enter'")
+    prompt.say("It’s a turned-based combat system like pokemon!")
+    prompt.ok(">> Enter")
     gets
-    prompt.say("Your moves (and your opponents) do X damage. 'Enter'")
+    prompt.say("Your moves (and your opponents) do X damage.")
+    prompt.ok(">> Enter")
     gets
-    prompt.say("If you run out of energy before your opponent, you lose and have to restart the game. 'Enter'")
+    prompt.say("If you run out of energy before your opponent, you lose and have to restart the game.")
+    prompt.ok(">> Enter")
     gets
     choosehelp = prompt.select("Ready to go back?", ["Back"])
     if choosehelp == "Back"

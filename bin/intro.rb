@@ -1,6 +1,8 @@
+
 def intro
     prompt = TTY::Prompt.new
-    prompt.say("The Ultimate Fighter")
+    a = Artii::Base.new :font => 'slant'
+    puts a.asciify('The Ultimate Fighter')
     sleep(0.5)
     signuporsignin
 end 

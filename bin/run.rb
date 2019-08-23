@@ -6,7 +6,6 @@ require_relative "./intro.rb"
 require "tty-prompt"
 require 'pry'
 require 'ruby-progressbar'
-require 'tty-box'
 
 
 $current_user = nil

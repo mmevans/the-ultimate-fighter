@@ -1,6 +1,5 @@
 def intro
     prompt = TTY::Prompt.new
-    print box
     prompt.say("The Ultimate Fighter")
     sleep(0.5)
     signuporsignin
@@ -30,6 +29,7 @@ def makeusername
         makepassword
     else
         prompt.say("Sorry, that username is already taken. Please try another!")
+        prompt.ok(">> Enter")
         gets
         makeusername
     end
@@ -117,6 +117,8 @@ def saveuser
     User.all.each do |user|
         if user.username == $current_user
             $user = user 
+            $user.level = 1
+            $user.money = 0
         end
     end
     goodluck  
@@ -202,12 +204,6 @@ def traininghelp
         sleep(0.5)
       end
     prompt.say("\nI'm sad just thinking about what could have been 'Enter''")
-    gets
-    4.times do
-        print "."
-        sleep(0.05)
-      end
-    prompt.say("This is michael talking to you btw. 'Enter'")
     gets
     choosehelp = prompt.select("Ready to go back?", ["Back"])
     if choosehelp == "Back"

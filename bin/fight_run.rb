@@ -35,9 +35,9 @@ def opponentinfo
     elsif $current_opponent.name == "Brawly Dewford"
         prompt.say("#{$user.trainer_name}: Brawly might seem tiny compared to the last guy, but he's twice as fast!")
         sleep(1.3)
-        prompt.say("#{$user.trainer_name}: He punches at lightning speeds and is known KO move is his High Jump Kick ")
+        prompt.say("#{$user.trainer_name}: He punches at lightning speeds and is known KO move is his High Jump Kick\n")
         sleep(1.3)
-        prompt.say("#{$user.trainer_name}: If you can avoid that, then you should be good! ")
+        prompt.say("#{$user.trainer_name}: If you can avoid that, then you should be good!\n")
         sleep(1.3)
         prompt.say("#{$user.trainer_name}: Good luck!")
         gets
@@ -184,6 +184,10 @@ def makemove
     if $usermiss == 0
         prompt.say("#{$current_user} missed!")
     end
+    if $user_injured_multiplier == 0.2
+        prompt.error("You are injured! Your damage multiplier has changed.")
+        sleep(1.5)
+    end
     if $health >= $opponent_full_health * 0.75
         prompt.ok("#{$user.trainer_name}: Your health is at #{$health}")
     elsif $health >= $opponent_full_health * 0.45
@@ -194,6 +198,10 @@ def makemove
     sleep(1.0)
     if $opponentmiss == 0
         prompt.say("Your opponent missed!")
+    end
+    if $opponent_injured_multiplier == 0.2
+        prompt.error("Your opponent is injured! Their damage multiplier has changed.")
+        sleep(1.5)
     end
     if $opponent_health >= $opponent_full_health * 0.75
         prompt.ok("#{$user.trainer_name}: Your opponent's health is at #{$opponent_health}")
@@ -263,6 +271,10 @@ miss_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 $user_miss = 1
 $opponentmiss = 1
 
+injured_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+$user_injured_multiplier = 1
+$opponent_injured_multiplier = 1
+
 if miss_array.sample > 16
     $user_miss = 0
 end
@@ -270,10 +282,20 @@ end
 if miss_array.sample > 16
     $opponentmiss = 0
 end
-#here
+
+if injured_array.sample > 19
+    $user.injured = true
+    $user_injured_multiplier = 0.2
+end
+
+if injured_array.sample > 19
+    $opponent_injured_multiplier = 0.2
+end
+
     Moveset.all.select do |m|
         if user_attack == m.moves
-            $opponent_health -= (m.damage * $user_miss)
+            $opponent_health -= (m.damage * $user_miss * $user_injured_multiplier)
+            $opponent_health.round
         end
     end
     if $opponent_health <= 0
@@ -283,7 +305,8 @@ end
         opponent_attack = $array_available_moves_opponent.sample 
         Moveset.all.select do |m|
             if opponent_attack == m.moves
-                $health -= (m.damage * $opponentmiss)
+                $health -= (m.damage * $opponentmiss * $opponent_injured_multiplier)
+                $health.round
             end
         end
     end 
@@ -299,6 +322,7 @@ def userwins
     puts `clear`
     prompt = TTY::Prompt.new(active_color: :blue)
     $user.level += 1
+    $user.injured = false
     prompt.say("#{$user.trainer_name}: You knocked em out cold! What a fight...")
     sleep(1.0) 
     prompt.say("#{$user.trainer_name}: You've leveled up! You're now level #{$user.level}!")

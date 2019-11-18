@@ -26,11 +26,15 @@ Start game using:
 
 
 
-Examples
+Demo Videos
 ---------------
 
+Sign-up/Login/Homepage
 ![](ultimate_fighter_example_pt1.gif)
 
+
+
+Fight #1
 ![](ultimate_fighter_example_pt2.gif)
 
 

@@ -1,6 +1,8 @@
+
 def intro
     prompt = TTY::Prompt.new
-    prompt.say("The Ultimate Fighter")
+    a = Artii::Base.new :font => 'slant'
+    puts a.asciify('The Ultimate Fighter')
     sleep(0.5)
     signuporsignin
 end 
@@ -162,7 +164,7 @@ def stats
     puts `clear`
     prompt = TTY::Prompt.new(active_color: :blue)
     prompt.say("Money: #{$user.money}")
-    prompt.say("Energt: #{$user.energy}")
+    prompt.say("Energy: #{$user.energy}")
     prompt.say("Strength: #{$user.str}")
     prompt.say("Flexibility: #{$user.flex}")
     prompt.say("Endurance: #{$user.end}")

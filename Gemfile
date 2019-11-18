@@ -13,4 +13,4 @@ gem "faker"
 gem 'tty-prompt'
 gem 'language_filter'
 gem 'ruby-progressbar', '~> 1.10', '>= 1.10.1'
-gem 'tty-box'
+gem 'artii', '~> 2.1', '>= 2.1.2'

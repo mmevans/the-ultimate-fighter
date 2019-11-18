@@ -1,13 +1,4 @@
 The Ultimate Fighter
-========================
-
-Welcome to the Ultimate Fighter! This is a text-based adventure game that was inspired by the game Punch Out. 
-
-
-
-
-
-The Ultimate Fighter
 =============
 
 This is a CLI text-based adventure game written in Ruby.
